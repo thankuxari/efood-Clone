@@ -1,0 +1,177 @@
+import { getQuery, getQueryAll, runQuery } from "../utils/promisesWrapper.js";
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+import { generateUserToken } from "../utils/jwt.js";
+import { randomUUID } from "crypto";
+
+dotenv.config();
+
+async function signUpUser(req, res) {
+    const { username, email, password } = req.body;
+
+    const sqlExistingUser = "SELECT * FROM users WHERE username = ?";
+    const sqlSignUpUser =
+        "INSERT INTO users(_id, username, email, password) VALUES (?, ?, ?, ?)";
+
+    const sqlCreateDefaultCart = "INSERT INTO cart(_id, user_id) VALUES (?, ?)";
+    try {
+        if (!username || !email || !password)
+            throw new Error(`All fields need to be filled!`);
+
+        // Check if the user already exists
+        const existingUser = await getQuery(sqlExistingUser, [username]);
+
+        if (existingUser) throw new Error(`User already exists`);
+
+        // Encrypt the password
+        const SALT_ROUNDS = Number(process.env.SALT_ROUNDS) || 8;
+        const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
+        // Create a unique ID
+        const userId = randomUUID();
+        const cart_id = randomUUID();
+
+        // Sign Up the user
+        const user = await runQuery(sqlSignUpUser, [
+            userId,
+            username,
+            email,
+            hashedPassword,
+        ]);
+
+        // Create user default cart
+
+        await runQuery(sqlCreateDefaultCart, [cart_id, userId]);
+
+        // Generate JWT Token
+        generateUserToken(userId, res);
+
+        // Response to the client
+        return res
+            .status(201)
+            .json(`User was created succufully! Welcome ${username}`);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
+async function loginUser(req, res) {
+    const { username, password } = req.body;
+    const sqlLoginUser = "SELECT _id, password FROM users WHERE username = ?";
+
+    try {
+        if (!username || !password)
+            throw new Error(`All fiels need to be filled`);
+
+        //Check is the user exists
+        const existingUser = await getQuery(sqlLoginUser, [username]);
+
+        if (!existingUser)
+            throw new Error("No user with these credentials exists");
+
+        // Compare the password that the user gave with the one stored in the db
+        const isPasswordValid = await bcrypt.compare(
+            password,
+            existingUser.password,
+        );
+
+        if (!isPasswordValid) throw new Error("Invalid Credentials");
+
+        // JWT Token
+        generateUserToken(existingUser._id, res);
+
+        // Response to the client
+        return res
+            .status(200)
+            .json(`Logged in successfully welcome back ${username}`);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
+async function logOut(req, res) {
+    try {
+        res.clearCookie("user_token");
+        return res.status(200).json("User logged out successfully");
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
+async function addProductToCart(req, res) {
+    const { id } = req.body;
+    try {
+        if (!id) throw new Error("Product does not exist!");
+
+        // Get users cart
+        const userId = req.user_id;
+        const sqlGetUsersCart = "SELECT * FROM cart WHERE user_id = ?";
+        const userCart = await getQuery(sqlGetUsersCart, [userId]);
+
+        // Get the product
+        const sqlFindProduct = "SELECT * FROM products WHERE _id = ?";
+        const product = await getQuery(sqlFindProduct, [id]);
+
+        // Add the product
+        const itemId = randomUUID();
+        const sqlAddProductToCartItems =
+            "INSERT INTO cart_items(_id, cart_id, product_id, quantity) VALUES(?, ?, ?, ?)";
+        await runQuery(sqlAddProductToCartItems, [
+            itemId,
+            userCart._id,
+            product._id,
+            1,
+        ]);
+
+        return res.status(200).json("Product was added successfully!");
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
+async function getCart(req, res) {
+    const userId = req.user_id;
+    const sqlGetUsersCart = "SELECT * FROM cart WHERE user_id = ?";
+    try {
+        // Get the users cart
+        const cart = await getQuery(sqlGetUsersCart, [userId]);
+
+        if (!cart) throw new Error("cart not found!");
+
+        // Get cart products with JOIN
+        const sqlGetCartProducts = `
+            SELECT 
+                p._id AS product_id,
+                p.product_name,
+                p.price,
+                p.shop_id,
+                ci.quantity
+            FROM cart_items ci
+            JOIN products p ON p._id = ci.product_id
+            WHERE ci.cart_id = ?
+        `;
+
+        const products = await getQueryAll(sqlGetCartProducts, [cart._id]);
+
+        console.log(products);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
+// async funtion completeOrder(req, res){
+//     const { id } = req.body;
+    
+//     try {
+        
+//     } catch (error) {
+//         console.error()
+//     }
+// }
+
+export { signUpUser, loginUser, logOut, addProductToCart, getCart };

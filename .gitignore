@@ -1,0 +1,36 @@
+# Dependecies
+
+node_modules/
+
+client/node_modules/
+
+server/node_modules/
+
+# Enviroment Variables
+
+.env
+
+server/.env/
+
+client/.env/
+
+# Logs
+
+npm-debug.log*
+
+yarn-debug.log*
+
+yarn-error.log*
+
+# IDEs
+
+.vscode/
+
+.idea/
+
+# MISC
+
+database.db
+
+server/database.db
+server/database copy.db
