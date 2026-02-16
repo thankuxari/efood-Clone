@@ -8,7 +8,7 @@
 
 Το project είναι χωρισμένο σε δύο μέρη:
 
-* **Frontend (Client):** React.js / Vite (ή Next.js), Tailwind CSS.
+* **Frontend (Client):** React.js / Vite, Tailwind CSS.
 * **Backend (Server):** Node.js, Express.js.
 * **Database:** SQLITE3.
 
@@ -26,4 +26,4 @@ SALT_ROUNDS=
 JWT_USER_SECRET= 
 JWT_SHOP_SECRET= 
 ```
-### 3. Δημιουργία ενός .db αρχείου σηγκεκριμένα με την ονομασία "database.db"
+### 3. Δημιουργία ενός .db αρχείου στο /server σηγκεκριμένα με την ονομασία "database.db"

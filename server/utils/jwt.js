@@ -10,6 +10,9 @@ async function generateUserToken(id, res) {
 
     res.cookie("user_token", token, {
         maxAge: 5 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
     });
 
     return token;
@@ -22,6 +25,9 @@ async function generateShopToken(id, res) {
 
     res.cookie("shop_token", token, {
         maxAge: 5 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
     });
 
     return token;

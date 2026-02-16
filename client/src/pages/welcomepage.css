@@ -1,0 +1,19 @@
+.welcome-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-container {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.left-container img {
+    width: 450px;
+}
+
+.right-container {
+    width: 50%;
+}

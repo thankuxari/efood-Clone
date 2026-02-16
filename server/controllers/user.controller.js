@@ -47,9 +47,10 @@ async function signUpUser(req, res) {
         generateUserToken(userId, res);
 
         // Response to the client
-        return res
-            .status(201)
-            .json(`User was created succufully! Welcome ${username}`);
+        return res.status(200).json({
+            _id: userId,
+            username,
+        });
     } catch (err) {
         console.error(err.message);
         return res.status(400).json(err.message);
@@ -82,9 +83,10 @@ async function loginUser(req, res) {
         generateUserToken(existingUser._id, res);
 
         // Response to the client
-        return res
-            .status(200)
-            .json(`Logged in successfully welcome back ${username}`);
+        return res.status(200).json({
+            _id: existingUser._id,
+            username,
+        });
     } catch (err) {
         console.error(err.message);
         return res.status(400).json(err.message);
@@ -164,14 +166,68 @@ async function getCart(req, res) {
     }
 }
 
-// async funtion completeOrder(req, res){
+async function deleteProductFromCart(req, res) {
+    const { id } = req.body;
+    const userId = req.user_id;
+    try {
+        // Get the cart by the userid
+        const sqlGetUsersCart = "SELECT * FROM cart WHERE user_id = ? ";
+        const cart = await getQuery(sqlGetUsersCart, [userId]);
+
+        // Get the product
+        const sqlDeleteProductFromCart =
+            "DELETE FROM cart_items WHERE cart_id = ? AND product_id = ?";
+        const product = await runQuery(sqlDeleteProductFromCart, [
+            cart._id,
+            id,
+        ]);
+
+        return res.status(200).json("The product was deleted succussfully!");
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
+async function getLoggedInUser(req, res) {
+    const sqlGetLoggedInUser =
+        "SELECT _id, username, email FROM users WHERE _id = ?";
+    const userId = req.user_id;
+    try {
+        const user = await getQuery(sqlGetLoggedInUser, [userId]);
+
+        if (!user) throw new Error("No user");
+
+        return res.status(200).json(user);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
+// async function completeOrder(req, res) {
 //     const { id } = req.body;
-    
+//     const userId = req.user_id;
+
 //     try {
-        
-//     } catch (error) {
-//         console.error()
+//         // Get the cart by the id
+//         const sqlGetUsersCart =
+//             "SELECT * FROM cart WHERE _id = ? AND user_id ?";
+//         const cart = await getQuery(sqlGetUsersCart, [id, userId]);
+
+//         console.log(cart);
+//     } catch (err) {
+//         console.error(err.message);
+//         return res.status(400).json(err.message);
 //     }
 // }
 
-export { signUpUser, loginUser, logOut, addProductToCart, getCart };
+export {
+    signUpUser,
+    loginUser,
+    logOut,
+    addProductToCart,
+    getCart,
+    deleteProductFromCart,
+    getLoggedInUser,
+};

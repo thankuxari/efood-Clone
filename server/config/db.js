@@ -5,7 +5,7 @@ sqlite3.verbose();
 
 const DB = new sqlite3.Database(
     "./database.db",
-    sqlite3.OPEN_READWRITE || sqlite3.OPEN_CREATE,
+    sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
     databaseConnection,
 );
 
@@ -66,7 +66,17 @@ const sqlCartItems = `
 )
 `;
 
+// const sqlOrders = `
+//     CREATE TABLE IF NOT EXISTS orders(
+//     _id TEXT PRIMARY KEY,
+//     cart_id TEXT NOT NULL,
+
+// )
+// `;
+
 DB.serialize(() => {
+    DB.run("PRAGMA foreign_keys = ON");
+
     // FOR THE USERS
     DB.run(sqlUsers, [], (err) => {
         if (err) {
@@ -116,8 +126,6 @@ DB.serialize(() => {
         }
         console.log("The table 'cart_items' was created");
     });
-
-    DB.run("PRAGMA foreign_keys = ON");
 });
 
 export default DB;

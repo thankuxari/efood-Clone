@@ -83,7 +83,7 @@ async function logOut(req, res) {
 async function getAllShops(req, res) {
     const sqlGetAllShops = "SELECT _id, shop_name from shops";
     try {
-        const shops = await getQuery(sqlGetAllShops);
+        const shops = await getQueryAll(sqlGetAllShops);
 
         if (!shops) throw new Error("There are no shops to show here!");
 
@@ -102,7 +102,6 @@ async function getSingleShop(req, res) {
     try {
         const shopInfo = await getQuery(sqlGetSingleShop, [id]);
         const shopProducts = await getQueryAll(sqlGetSingleShopProducts, [id]);
-        console.log(shopProducts);
         return res.status(200).json({ shopInfo, shopProducts });
     } catch (err) {
         console.error(err.message);
