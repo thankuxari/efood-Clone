@@ -63,7 +63,7 @@ async function loginShop(req, res) {
 
         generateShopToken(existingShop._id, res);
 
-        return res.status(200).json(`Welcome back ${shop_name}`);
+        return res.status(200).json({ _id: existingShop._id, shop_name });
     } catch (err) {
         console.error(err.message);
         return res.status(400).json(err.message);
@@ -172,6 +172,20 @@ async function deleteProduct(req, res) {
     }
 }
 
+async function getLoggedInShop(req, res) {
+    const shopId = req.shop_id;
+    const sqlGetLoggedInShop = "SELECT * from shops where shop_id = ?";
+    try {
+        const shop = await getQuery(sqlGetLoggedInShop, [shopId]);
+
+        if (!shop) throw new Error("No shop");
+
+        return res.status(200).json(shop);
+    } catch (err) {
+        console.error(err.message);
+    }
+}
+
 export {
     signUpShop,
     loginShop,
@@ -181,4 +195,5 @@ export {
     getSingleShop,
     deleteProduct,
     editProduct,
+    getLoggedInShop,
 };

@@ -10,6 +10,7 @@ import { userContext } from "./context/userContext.jsx";
 import { Routes, Route } from "react-router-dom";
 import { useContext } from "react";
 import SignUpShops from "./pages/SignUpShops.jsx";
+import LoginShop from "./pages/LoginShop.jsx";
 
 function App() {
     const { user } = useContext(userContext);
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="shops/:id" element={<ShopPage />} />
                 <Route path="/signup_shops" element={<SignUpShops />} />
+                <Route path="/login_shop" element={<LoginShop />} />
             </Routes>
         </>
     );

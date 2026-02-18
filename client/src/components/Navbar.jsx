@@ -3,10 +3,12 @@ import "./navbar.css";
 import { useContext, useState } from "react";
 import { userContext } from "../context/userContext.jsx";
 import SideBar from "./SideBar.jsx";
+import { shopContext } from "../context/shopContext.jsx";
 
 export default function Navbar() {
     const [sideBar, setSideBar] = useState(false);
     const { user, setUser } = useContext(userContext);
+    const { shop, setShop } = useContext(shopContext);
     const navigate = useNavigate();
 
     async function handleLogout() {
@@ -27,6 +29,8 @@ export default function Navbar() {
         }
     }
 
+    console.log(shop);
+
     return (
         <>
             <header>
@@ -34,7 +38,7 @@ export default function Navbar() {
                     <Link to={"/"}>
                         <img src="/logo.png" alt="" />
                     </Link>
-                    {user && (
+                    {(user || shop) && (
                         <form action="">
                             <input
                                 className="search-bar-input"
@@ -44,7 +48,7 @@ export default function Navbar() {
                         </form>
                     )}
                     <ul>
-                        {user ? (
+                        {user || shop ? (
                             <>
                                 <Link
                                     className="user-info-container"
@@ -55,7 +59,9 @@ export default function Navbar() {
                                         src="/user_profile.png"
                                         alt=""
                                     />
-                                    <h5>{user.username}</h5>
+                                    <h5>
+                                        {user ? user.username : shop.shop_name}
+                                    </h5>
                                 </Link>
                                 <button onClick={handleLogout}>Logout</button>
                             </>
