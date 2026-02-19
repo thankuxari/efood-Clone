@@ -18,10 +18,10 @@ shopRouter.post("/signup", signUpShop);
 shopRouter.post("/login", loginShop);
 shopRouter.post("/logout", logOut);
 shopRouter.get("/", getAllShops);
+shopRouter.get("/me", verifyShopToken, getLoggedInShop);
 shopRouter.get("/:id", getSingleShop);
 shopRouter.post("/add_product", verifyShopToken, addNewProduct);
 shopRouter.delete("/delete_product/:id", verifyShopToken, deleteProduct);
 shopRouter.put("/edit_product/:id", verifyShopToken, editProduct);
-shopRouter.get("/me", verifyShopToken, getLoggedInShop);
 
 export default shopRouter;

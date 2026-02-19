@@ -12,6 +12,7 @@ async function signUpShop(req, res) {
     try {
         if (!shop_name || !email || !password)
             throw new Error("All fields must be filled");
+        console.log(shop_name, email, password);
 
         const existingShop = await getQuery(sqlExistingShop, [
             shop_name,
@@ -35,7 +36,7 @@ async function signUpShop(req, res) {
 
         generateShopToken(id, res);
 
-        res.status(201).json(`Shop created successfully! Welcome ${shop_name}`);
+        res.status(201).json({ _id: id, shop_name });
     } catch (err) {
         console.error(err.message);
         return res.status(400).json(err.message);
@@ -174,12 +175,12 @@ async function deleteProduct(req, res) {
 
 async function getLoggedInShop(req, res) {
     const shopId = req.shop_id;
-    const sqlGetLoggedInShop = "SELECT * from shops where shop_id = ?";
+    const sqlGetLoggedInShop =
+        "SELECT _id, shop_name, email from shops where _id = ?";
     try {
         const shop = await getQuery(sqlGetLoggedInShop, [shopId]);
 
         if (!shop) throw new Error("No shop");
-
         return res.status(200).json(shop);
     } catch (err) {
         console.error(err.message);

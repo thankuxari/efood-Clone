@@ -11,7 +11,7 @@ export function ShopProvider({ children }) {
             setLoading(true);
             try {
                 const response = await fetch(
-                    "http://localhost:8000/api/v1/shops/me",
+                    "http://localhost:8000/v1/api/shops/me",
                     {
                         credentials: "include",
                     },

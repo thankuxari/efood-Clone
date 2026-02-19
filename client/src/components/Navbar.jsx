@@ -14,7 +14,7 @@ export default function Navbar() {
     async function handleLogout() {
         try {
             const response = await fetch(
-                "http://localhost:8000/v1/api/users/logout",
+                `http://localhost:8000/v1/api/${user ? "users" : "shops"}/logout`,
                 {
                     method: "POST",
                     credentials: "include",
@@ -23,20 +23,20 @@ export default function Navbar() {
 
             if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
             setUser(null);
+            setShop(null);
             navigate("/");
         } catch (err) {
             console.error(err.message);
         }
     }
 
-    console.log(shop);
-
     return (
         <>
             <header>
                 <nav>
-                    <Link to={"/"}>
+                    <Link className="logo-container" to={"/"}>
                         <img src="/logo.png" alt="" />
+                        {shop && <h3>PARTNER</h3>}
                     </Link>
                     {(user || shop) && (
                         <form action="">

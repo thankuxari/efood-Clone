@@ -6,14 +6,17 @@ import Login from "./pages/Login.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import ShopPage from "./pages/ShopPage.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 import { userContext } from "./context/userContext.jsx";
 import { Routes, Route } from "react-router-dom";
 import { useContext } from "react";
 import SignUpShops from "./pages/SignUpShops.jsx";
 import LoginShop from "./pages/LoginShop.jsx";
+import { shopContext } from "./context/shopContext.jsx";
 
 function App() {
     const { user } = useContext(userContext);
+    const { shop } = useContext(shopContext);
 
     return (
         <>
@@ -21,7 +24,17 @@ function App() {
             <Routes>
                 <Route
                     path="/"
-                    element={user ? <HomePage /> : <WelcomePage />}
+                    element={
+                        user || shop ? (
+                            user ? (
+                                <HomePage />
+                            ) : (
+                                <Dashboard />
+                            )
+                        ) : (
+                            <WelcomePage />
+                        )
+                    }
                 />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="*" element={<NotFound />} />

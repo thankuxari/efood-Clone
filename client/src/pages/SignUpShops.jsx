@@ -1,12 +1,16 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
+import { shopContext } from "../context/shopContext.jsx";
 
 export default function SignUpShops() {
     const [form, setForm] = useState({
-        username: "",
+        shop_name: "",
         email: "",
         password: "",
     });
+
+    const { setShop } = useContext(shopContext);
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
 
@@ -16,7 +20,7 @@ export default function SignUpShops() {
 
         try {
             const response = await fetch(
-                "http://localhost:8000/v1/api/users/signup",
+                "http://localhost:8000/v1/api/shops/signup",
 
                 {
                     method: "POST",
@@ -31,7 +35,8 @@ export default function SignUpShops() {
             if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
 
             const data = await response.json();
-            console.log("Signup success: ", data);
+            setShop(data);
+            navigate("/");
         } catch (err) {
             console.error(err.message);
         } finally {
@@ -52,7 +57,7 @@ export default function SignUpShops() {
                 <input
                     type="text"
                     placeholder="username"
-                    name="username"
+                    name="shop_name"
                     onChange={handleChange}
                 />
                 <input

@@ -76,3 +76,12 @@ nav a:hover {
     border-radius: 50%;
     object-fit: cover;
 }
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-container h3 {
+    color: #960808;
+}
