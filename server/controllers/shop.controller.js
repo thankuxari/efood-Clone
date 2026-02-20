@@ -110,6 +110,23 @@ async function getSingleShop(req, res) {
     }
 }
 
+async function getLoggedInShopProducts(req, res) {
+    const id = req.shop_id;
+    const sqlGetLoggedInShopProducts =
+        "SELECT * FROM products WHERE shop_id = ?";
+    try {
+        const shopProducts = await getQueryAll(sqlGetLoggedInShopProducts, [
+            id,
+        ]);
+        if (!shopProducts) throw new Error("This shop has no products!");
+
+        return res.status(200).json(shopProducts);
+    } catch (error) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
 async function addNewProduct(req, res) {
     const { product_name, price } = req.body;
     const shopId = req.shop_id;
@@ -121,7 +138,7 @@ async function addNewProduct(req, res) {
 
         await runQuery(sqlAddNewProduct, [product_name, price, shopId]);
 
-        return res.status(201).json(`New product ${product_name} was added`);
+        return res.status(201).json({ product_name, price });
     } catch (err) {
         console.error(err.message);
         return res.status(400).json("");
@@ -197,4 +214,5 @@ export {
     deleteProduct,
     editProduct,
     getLoggedInShop,
+    getLoggedInShopProducts,
 };

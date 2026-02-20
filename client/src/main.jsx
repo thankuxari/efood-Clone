@@ -5,13 +5,16 @@ import { UserProvider } from "./context/userContext.jsx";
 import App from "./App.jsx";
 import "./index.css";
 import { ShopProvider } from "./context/shopContext.jsx";
+import { ModalProvider } from "./context/modalContext.jsx";
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
         <BrowserRouter>
             <UserProvider>
                 <ShopProvider>
-                    <App />
+                    <ModalProvider>
+                        <App />
+                    </ModalProvider>
                 </ShopProvider>
             </UserProvider>
         </BrowserRouter>

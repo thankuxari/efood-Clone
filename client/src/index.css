@@ -9,3 +9,13 @@
 body {
     font-family: Poppins;
 }
+
+.primary-button {
+    background-color: #c70e0e;
+    padding: 0.55em;
+    border-radius: 0.25em;
+    color: white;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}

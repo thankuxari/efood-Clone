@@ -13,7 +13,7 @@ export default function WelcomePage() {
                         Συνδέσου στον λογαριασμό σου και αναζήτησε καταστήματα
                         με φαγητό!
                     </h1>
-                    <Link to="/login">Συνδέσου τώρα</Link>
+                    <Link to="/login" className="primary-button">Συνδέσου τώρα</Link>
                 </div>
             </div>
         </>

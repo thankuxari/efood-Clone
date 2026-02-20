@@ -1,0 +1,33 @@
+.products-view-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.55em;
+}
+
+.products-view-header button {
+    background-color: green;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding: 1em 2em;
+    gap: 20px;
+}
+
+.product-card {
+    width: 150px;
+    background-color: white;
+    border-radius: 0.25em;
+}
+
+.product-card img {
+    border-radius: 0.25em 0.25em 0em 0em;
+}
+
+.product-information-container {
+    padding: 1em 0.25em;
+    display: flex;
+    justify-content: space-between;
+}

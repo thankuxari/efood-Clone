@@ -9,6 +9,7 @@ import {
     editProduct,
     logOut,
     getLoggedInShop,
+    getLoggedInShopProducts,
 } from "../controllers/shop.controller.js";
 import verifyShopToken from "../middleware/verifyShopToken.js";
 
@@ -19,6 +20,7 @@ shopRouter.post("/login", loginShop);
 shopRouter.post("/logout", logOut);
 shopRouter.get("/", getAllShops);
 shopRouter.get("/me", verifyShopToken, getLoggedInShop);
+shopRouter.get("/shop_products", verifyShopToken, getLoggedInShopProducts);
 shopRouter.get("/:id", getSingleShop);
 shopRouter.post("/add_product", verifyShopToken, addNewProduct);
 shopRouter.delete("/delete_product/:id", verifyShopToken, deleteProduct);
