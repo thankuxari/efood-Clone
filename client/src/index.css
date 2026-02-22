@@ -7,15 +7,20 @@
 }
 
 body {
-    font-family: Poppins;
+    font-family: Roboto;
+    background-color: #fafafa;
 }
 
 .primary-button {
-    background-color: #c70e0e;
+    background-color: #374151;
     padding: 0.55em;
     border-radius: 0.25em;
     color: white;
     text-decoration: none;
     border: none;
     cursor: pointer;
+}
+
+.primary-button:hover {
+    background-color: #1f2937;
 }

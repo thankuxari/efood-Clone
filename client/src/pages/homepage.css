@@ -1,0 +1,37 @@
+.homepage-container {
+    width: 850px;
+    margin: 0 auto;
+}
+
+.shop-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 40px;
+}
+
+.shop-card {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f7;
+    border-radius: 0.35em;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.shop-card img {
+    width: auto;
+    height: 80px;
+    object-fit: cover;
+}
+
+.shop-card {
+    text-decoration: none;
+}
+
+.shop-card h5 {
+    color: black;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 500;
+    padding: 0.5em;
+}

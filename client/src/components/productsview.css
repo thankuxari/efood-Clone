@@ -1,3 +1,9 @@
+.products-view-container {
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+}
+
 .products-view-header {
     display: flex;
     width: 100%;
@@ -11,13 +17,16 @@
 
 .products-grid {
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: auto auto auto;
     padding: 1em 2em;
     gap: 20px;
+    flex: 1;
+    overflow-y: auto;
 }
 
 .product-card {
     width: 150px;
+    height: 150px;
     background-color: white;
     border-radius: 0.25em;
 }

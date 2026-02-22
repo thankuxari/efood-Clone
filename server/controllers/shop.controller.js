@@ -12,7 +12,6 @@ async function signUpShop(req, res) {
     try {
         if (!shop_name || !email || !password)
             throw new Error("All fields must be filled");
-        console.log(shop_name, email, password);
 
         const existingShop = await getQuery(sqlExistingShop, [
             shop_name,

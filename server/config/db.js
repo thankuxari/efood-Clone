@@ -33,6 +33,8 @@ const sqlShops = `
     shop_name TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
+    shop_logo TEXT,
+    shop_banner TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 )
 `;

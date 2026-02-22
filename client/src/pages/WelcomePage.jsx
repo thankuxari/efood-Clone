@@ -6,14 +6,19 @@ export default function WelcomePage() {
         <>
             <div className="welcome-page-container">
                 <div className="left-container">
-                    <img src="/welcomepage.gif" alt="" />
+                    <img src="/welcomepage.png" alt="" />
                 </div>
                 <div className="right-container">
                     <h1>
                         Συνδέσου στον λογαριασμό σου και αναζήτησε καταστήματα
                         με φαγητό!
                     </h1>
-                    <Link to="/login" className="primary-button">Συνδέσου τώρα</Link>
+                    <Link
+                        to="/login"
+                        className="primary-button homepage-button"
+                    >
+                        Συνδέσου τώρα
+                    </Link>
                 </div>
             </div>
         </>

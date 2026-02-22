@@ -55,7 +55,9 @@ export default function Modal({ products, setProducts }) {
                         placeholder="Τιμή προϊόντος"
                         onChange={handleChange}
                     />
-                    <button type="submit">Προσθήκη</button>
+                    <button type="submit" className="primary-button">
+                        Προσθήκη
+                    </button>
                 </form>
             </div>
         </div>,

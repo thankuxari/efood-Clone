@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "./homepage.css";
 
 export default function HomePage() {
     const [shops, setShops] = useState([]);
@@ -27,22 +28,19 @@ export default function HomePage() {
         getShops();
     }, []);
 
+    if (loading) return <h1>Loading...</h1>;
+
     return (
-        <>
-            {loading ? (
-                <h1>Loading...</h1>
-            ) : (
-                <div>
-                    <h1>{shops.length} Καταστήματα</h1>
-                    <div>
-                        {shops.map(({ _id, shop_name }) => (
-                            <Link key={_id} to={`shops/${_id}`}>
-                                {shop_name}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            )}
-        </>
+        <div className="homepage-container">
+            <h1>{shops.length} Καταστήματα</h1>
+            <div className="shop-grid">
+                {shops.map(({ _id, shop_name }) => (
+                    <Link key={_id} to={`shops/${_id}`} className="shop-card">
+                        <img src="/shop_default_banner.jpg" alt="" />
+                        <h5>{shop_name}</h5>
+                    </Link>
+                ))}
+            </div>
+        </div>
     );
 }

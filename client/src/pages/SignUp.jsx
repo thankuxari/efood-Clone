@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { userContext } from "../context/userContext";
+import "./signup.css";
 
 export default function SignUp() {
     const [form, setForm] = useState({
@@ -50,7 +51,7 @@ export default function SignUp() {
     }
 
     return (
-        <>
+        <div className="signup-container">
             <h1>Νέος χρήστης?</h1>
             <h5>Κάνε εγγραφή τώρα </h5>
             <form action="submit" onSubmit={handleSubmit}>
@@ -72,12 +73,14 @@ export default function SignUp() {
                     name="password"
                     onChange={handleChange}
                 />
-                <button type="submit">Εγγραφή</button>
+                <button type="submit" className="primary-button">
+                    Εγγραφή
+                </button>
             </form>
-            <h5>
+            <p>
                 Έχεις ήδη λογαριασμό? Συνδέσου αμέσως παντώντας{" "}
                 <Link to="/login">εδώ</Link>
-            </h5>
-        </>
+            </p>
+        </div>
     );
 }

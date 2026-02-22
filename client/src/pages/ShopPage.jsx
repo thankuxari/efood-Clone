@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import ProductCard from "../components/ProductCard.jsx";
 import "./shoppage.css";
 
 export default function ShopPage() {
@@ -47,14 +48,24 @@ export default function ShopPage() {
                         <h3>{shopInfo.shop_name}</h3>
                         <h5>{shopInfo.created_at}</h5>
                     </div>
+                    <div className="action-container">
+                        <span>
+                            <i className="fa-regular fa-heart"></i>
+                        </span>
+                        <span>
+                            <i className="fa-solid fa-info"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div>
+            <div className="products-shop-grid">
                 {shopProducts.map((product) => (
-                    <div key={product._id}>
-                        <h3>{product.product_name}</h3>
-                        <h5>{product.price}</h5>
-                    </div>
+                    <ProductCard
+                        key={product._id}
+                        _id={product._id}
+                        product_name={product.product_name}
+                        price={product.price}
+                    />
                 ))}
             </div>
         </>

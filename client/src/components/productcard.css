@@ -1,0 +1,16 @@
+.shop-product-card {
+    width: 100%;
+    padding: 1em;
+    background-color: #f5f5f7;
+    border-bottom: 2px solid #e5e5ea;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shop-product-card img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 0.35em;
+}

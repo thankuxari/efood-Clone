@@ -17,3 +17,13 @@
 .right-container {
     width: 50%;
 }
+
+.right-container h1 {
+    font-size: 2.75rem;
+}
+
+.right-container a {
+    display: block;
+    width: 200px;
+    margin-top: 2em;
+}

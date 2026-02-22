@@ -3,6 +3,7 @@ import { shopContext } from "../context/shopContext";
 import ProductsView from "../components/ProductsView.jsx";
 import OrdersView from "../components/OrdersView.jsx";
 import ReviewsView from "../components/ReviewsView.jsx";
+import ShopSettings from "../components/ShopSettings.jsx";
 import "./dashboard.css";
 
 export default function Dashboard() {
@@ -35,12 +36,19 @@ export default function Dashboard() {
                         >
                             <span>Κριτικές</span>
                         </li>
+                        <li
+                            value="reviews"
+                            onClick={() => setCurrentTab("settings")}
+                        >
+                            <span>Πληροφορίες/Ρυθμίσεις Καταστήματος</span>
+                        </li>
                     </ul>
                 </div>
                 <div className="view-container">
                     {currentTab === "products" && <ProductsView />}
                     {currentTab === "orders" && <OrdersView />}
                     {currentTab === "reviews" && <ReviewsView />}
+                    {currentTab === "settings" && <ShopSettings />}
                 </div>
             </div>
         </div>

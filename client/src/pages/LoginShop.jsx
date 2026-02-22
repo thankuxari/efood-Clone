@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { shopContext } from "../context/shopContext";
+import "./login.css";
 
 export default function LoginShop() {
     const [form, setForm] = useState({
@@ -46,7 +47,7 @@ export default function LoginShop() {
     }
 
     return (
-        <>
+        <div className="login-container">
             <h1>Έχεις λογαριασμό καταστήματος?</h1>
             <form action="submit" onSubmit={handleSubmit}>
                 <input
@@ -61,12 +62,14 @@ export default function LoginShop() {
                     name="password"
                     onChange={handleChange}
                 />
-                <button type="submit">Συνδέσου</button>
+                <button type="submit" className="primary-button">
+                    Συνδέσου
+                </button>
             </form>
-            <h5>
+            <p>
                 Δεν έχεις λογαριασμό? Δημιούργησε έναν αμέσως παντώντας{" "}
                 <Link to="/signup">εδώ</Link>
-            </h5>
-        </>
+            </p>
+        </div>
     );
 }

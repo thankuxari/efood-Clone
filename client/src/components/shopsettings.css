@@ -1,0 +1,27 @@
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.settings-view-header {
+    margin-top: 10px;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: auto;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.settings-view-container {
+    padding: 0.75em;
+    height: 220px;
+}
+
+.settings-view-container h3 {
+    width: 50%;
+    border-bottom: 2px solid #e5e5ea;
+    margin-bottom: 1em;
+}
