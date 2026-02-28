@@ -35,6 +35,9 @@ const sqlShops = `
     password TEXT NOT NULL,
     shop_logo TEXT,
     shop_banner TEXT,
+    shop_category TEXT,
+    shop_opening_hours TEXT,
+    shop_closing_hours TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 )
 `;
@@ -45,6 +48,7 @@ const sqlProducts = `
     product_name TEXT NOT NULL,
     price REAL NOT NULL,
     shop_id TEXT NOT NULL,
+    product_image TEXT,
     FOREIGN KEY (shop_id) REFERENCES shops(_id) ON DELETE CASCADE
 )
 `;

@@ -30,7 +30,4 @@ yarn-error.log*
 
 # MISC
 
-database.db
-
-server/database.db
-server/database copy.db
+*.db

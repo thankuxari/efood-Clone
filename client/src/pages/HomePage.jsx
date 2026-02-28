@@ -30,16 +30,55 @@ export default function HomePage() {
 
     if (loading) return <h1>Loading...</h1>;
 
+    console.log(shops);
+
     return (
         <div className="homepage-container">
             <h1>{shops.length} Καταστήματα</h1>
             <div className="shop-grid">
-                {shops.map(({ _id, shop_name }) => (
-                    <Link key={_id} to={`shops/${_id}`} className="shop-card">
-                        <img src="/shop_default_banner.jpg" alt="" />
-                        <h5>{shop_name}</h5>
-                    </Link>
-                ))}
+                {shops.map(
+                    ({
+                        _id,
+                        shop_name,
+                        shop_category,
+                        shop_logo,
+                        shop_banner,
+                    }) => (
+                        <Link
+                            key={_id}
+                            to={`shops/${_id}`}
+                            className="shop-card"
+                        >
+                            <div className="top-container">
+                                <img
+                                    src={
+                                        !shop_banner
+                                            ? "/shop_default_banner.jpg"
+                                            : shop_banner
+                                    }
+                                    alt=""
+                                />
+                                <img
+                                    className="shop-logo"
+                                    src={
+                                        !shop_logo
+                                            ? "/shop_default_profile.jpg"
+                                            : shop_logo
+                                    }
+                                    alt=""
+                                />
+                            </div>
+                            <div className="bottom-container">
+                                <h5>{shop_name}</h5>
+                                <span>
+                                    {!shop_category
+                                        ? "Κατάστημα"
+                                        : shop_category}
+                                </span>
+                            </div>
+                        </Link>
+                    ),
+                )}
             </div>
         </div>
     );

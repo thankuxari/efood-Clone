@@ -25,3 +25,13 @@
     border-bottom: 2px solid #e5e5ea;
     margin-bottom: 1em;
 }
+
+.profile-picture-container img {
+    width: 50px;
+    border-radius: 50%;
+}
+
+.banner-container img {
+    width: 250px;
+    object-fit: cover;
+}

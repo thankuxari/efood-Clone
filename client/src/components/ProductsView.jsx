@@ -54,8 +54,6 @@ export default function ProductsView() {
             </>
         );
 
-    console.log(products);
-
     return (
         <div className="products-view-container">
             <div className="products-view-header">
@@ -68,9 +66,16 @@ export default function ProductsView() {
                 </button>
             </div>
             <div className="products-grid">
-                {products.map(({ _id, product_name, price }) => (
+                {products.map(({ _id, product_name, price, product_image }) => (
                     <div className="product-card" key={_id}>
-                        <img src="https://placehold.co/150x100" alt="" />
+                        <img
+                            src={
+                                !product_image
+                                    ? "https://placehold.co/150x100"
+                                    : product_image
+                            }
+                            alt=""
+                        />
                         <div className="product-information-container">
                             <h4>{product_name}</h4>
                             <span>{formatMoney(price)}</span>

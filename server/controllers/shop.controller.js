@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import { generateShopToken } from "../utils/jwt.js";
 import { getQuery, runQuery, getQueryAll } from "../utils/promisesWrapper.js";
+import { v2 as cloudinary } from "cloudinary";
 import bcrypt from "bcrypt";
 
 async function signUpShop(req, res) {
@@ -81,7 +82,8 @@ async function logOut(req, res) {
 }
 
 async function getAllShops(req, res) {
-    const sqlGetAllShops = "SELECT _id, shop_name from shops";
+    const sqlGetAllShops =
+        "SELECT _id, shop_name, shop_category, shop_logo ,shop_banner from shops";
     try {
         const shops = await getQueryAll(sqlGetAllShops);
 
@@ -96,7 +98,8 @@ async function getAllShops(req, res) {
 
 async function getSingleShop(req, res) {
     const { id } = req.params;
-    const sqlGetSingleShop = "SELECT * FROM shops WHERE _id = ?";
+    const sqlGetSingleShop =
+        "SELECT _id, shop_name, shop_category, shop_banner FROM shops WHERE _id = ?";
     const sqlGetSingleShopProducts = "SELECT * FROM products WHERE shop_id = ?";
 
     try {
@@ -127,15 +130,26 @@ async function getLoggedInShopProducts(req, res) {
 }
 
 async function addNewProduct(req, res) {
-    const { product_name, price } = req.body;
+    const { product_name, price, product_image } = req.body;
     const shopId = req.shop_id;
     const sqlAddNewProduct =
-        "INSERT INTO products(product_name, price, shop_id) VALUES(?, ?, ?)";
+        "INSERT INTO products(product_name, price, shop_id, product_image) VALUES(?, ?, ?, ?)";
     try {
         if (!product_name || !price)
             throw new Error("All fields must be filled!");
 
-        await runQuery(sqlAddNewProduct, [product_name, price, shopId]);
+        let uploadImageResponse = null;
+        if (product_image) {
+            uploadImageResponse =
+                await cloudinary.uploader.upload(product_image);
+        }
+
+        await runQuery(sqlAddNewProduct, [
+            product_name,
+            price,
+            shopId,
+            uploadImageResponse.secure_url,
+        ]);
 
         return res.status(201).json({ product_name, price });
     } catch (err) {
@@ -192,7 +206,7 @@ async function deleteProduct(req, res) {
 async function getLoggedInShop(req, res) {
     const shopId = req.shop_id;
     const sqlGetLoggedInShop =
-        "SELECT _id, shop_name, email from shops where _id = ?";
+        "SELECT _id, shop_name, email, shop_logo, shop_banner from shops where _id = ?";
     try {
         const shop = await getQuery(sqlGetLoggedInShop, [shopId]);
 
@@ -200,6 +214,65 @@ async function getLoggedInShop(req, res) {
         return res.status(200).json(shop);
     } catch (err) {
         console.error(err.message);
+    }
+}
+
+async function editShopInformation(req, res) {
+    const { openingHours, closingHours, category, shop_banner, shop_logo } =
+        req.body;
+    const shop_id = req.shop_id;
+    const sqlGetLoggedInStore = "SELECT _id from shops WHERE _id = ?";
+    try {
+        const shop = await getQuery(sqlGetLoggedInStore, [shop_id]);
+
+        if (!shop) throw new Error("No shop logged in");
+
+        const sqlEditOpeningClosingHours =
+            "UPDATE shops SET shop_opening_hours = ?, shop_closing_hours = ? WHERE _id = ?";
+
+        if (openingHours || closingHours) {
+            await runQuery(sqlEditOpeningClosingHours, [
+                openingHours,
+                closingHours,
+                shop_id,
+            ]);
+        }
+
+        const sqlEditShopCategory =
+            "UPDATE shops SET shop_category = ? WHERE _id = ?";
+
+        if (category) {
+            await runQuery(sqlEditShopCategory, [category, shop_id]);
+        }
+
+        const sqlEditShopBannerImage =
+            "UPDATE shops SET shop_banner = ? WHERE _id = ?";
+
+        if (shop_banner) {
+            const uploadImageResponse =
+                await cloudinary.uploader.upload(shop_banner);
+            await runQuery(sqlEditShopBannerImage, [
+                uploadImageResponse.secure_url,
+                shop_id,
+            ]);
+        }
+
+        const sqlEditShopLogoImage =
+            "UPDATE shops SET shop_logo = ? WHERE _id = ?";
+
+        if (shop_logo) {
+            const uploadImageResponse =
+                await cloudinary.uploader.upload(shop_logo);
+            await runQuery(sqlEditShopLogoImage, [
+                uploadImageResponse.secure_url,
+                shop_id,
+            ]);
+        }
+
+        return res.status(200).json("shop was updated");
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
     }
 }
 
@@ -214,4 +287,5 @@ export {
     editProduct,
     getLoggedInShop,
     getLoggedInShopProducts,
+    editShopInformation,
 };

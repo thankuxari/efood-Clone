@@ -3,14 +3,33 @@
     margin: 0 auto;
 }
 
+.homepage-container h1 {
+    margin: 1em 0em;
+}
+
 .shop-grid {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: repeat(2, 1fr);
     gap: 40px;
 }
 
+.top-container {
+    position: relative;
+}
+
+.top-container .shop-logo {
+    position: absolute;
+    left: 10px;
+    bottom: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid black;
+    z-index: 2;
+}
+
 .shop-card {
-    width: 350px;
+    width: 275px;
     display: flex;
     flex-direction: column;
     background-color: #f5f5f7;
@@ -20,7 +39,7 @@
 
 .shop-card img {
     width: auto;
-    height: 80px;
+    height: 150px;
     object-fit: cover;
 }
 
@@ -28,10 +47,18 @@
     text-decoration: none;
 }
 
-.shop-card h5 {
+.shop-card .bottom-container {
     color: black;
     text-decoration: none;
-    font-size: 1.05rem;
-    font-weight: 500;
-    padding: 0.5em;
+    padding: 0.75em;
+}
+
+.shop-card .bottom-container h5 {
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.shop-card .bottom-container span {
+    font-size: 0.75rem;
+    font-weight: 400;
 }

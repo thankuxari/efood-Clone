@@ -40,13 +40,20 @@ export default function ShopPage() {
             <Link to="/">&larr; Πίσω</Link>
             <div className="shop-info-container">
                 <div className="top-container">
-                    <img src="/shop_default_banner.jpg" alt="" />
+                    <img
+                        src={
+                            !shopInfo.shop_banner
+                                ? "/shop_default_banner.jpg"
+                                : shopInfo.shop_banner
+                        }
+                        alt=""
+                    />
                 </div>
                 <div className="lower-container">
                     <img src="/shop_default_profile.jpg" alt="" />
                     <div className="text-container">
                         <h3>{shopInfo.shop_name}</h3>
-                        <h5>{shopInfo.created_at}</h5>
+                        <h5>{shopInfo.shop_category}</h5>
                     </div>
                     <div className="action-container">
                         <span>
@@ -65,6 +72,7 @@ export default function ShopPage() {
                         _id={product._id}
                         product_name={product.product_name}
                         price={product.price}
+                        product_image={product.product_image}
                     />
                 ))}
             </div>

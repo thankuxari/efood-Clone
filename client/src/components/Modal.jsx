@@ -2,13 +2,18 @@ import { useContext, useState } from "react";
 import "./modal.css";
 import { createPortal } from "react-dom";
 import { modalContext } from "../context/modalContext";
+import usePreviewImage from "../hooks/usePreviewImage.js";
 
 export default function Modal({ products, setProducts }) {
     const [form, setForm] = useState({
         product_name: "",
         price: "",
+        product_image: "",
     });
+
     const { setOpenModal } = useContext(modalContext);
+
+    const { handleImageChange, imageUrl } = usePreviewImage();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -20,7 +25,7 @@ export default function Modal({ products, setProducts }) {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
-                    body: JSON.stringify(form),
+                    body: JSON.stringify({ ...form, product_image: imageUrl }),
                 },
             );
 
@@ -55,6 +60,15 @@ export default function Modal({ products, setProducts }) {
                         placeholder="Τιμή προϊόντος"
                         onChange={handleChange}
                     />
+                    <label htmlFor="product_image">
+                        Ανέβασε την εικόνα του προϊόντος
+                    </label>
+                    <input
+                        type="file"
+                        id="product_image"
+                        onChange={handleImageChange}
+                    />
+                    {imageUrl && <img src={imageUrl} />}
                     <button type="submit" className="primary-button">
                         Προσθήκη
                     </button>

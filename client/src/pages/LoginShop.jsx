@@ -68,7 +68,7 @@ export default function LoginShop() {
             </form>
             <p>
                 Δεν έχεις λογαριασμό? Δημιούργησε έναν αμέσως παντώντας{" "}
-                <Link to="/signup">εδώ</Link>
+                <Link to="/signup_shops">εδώ</Link>
             </p>
         </div>
     );
