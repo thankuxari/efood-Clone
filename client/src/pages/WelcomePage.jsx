@@ -6,7 +6,9 @@ export default function WelcomePage() {
         <>
             <div className="welcome-page-container">
                 <div className="left-container">
-                    <img src="/welcomepage.png" alt="" />
+                    <video autoPlay muted loop playsInline>
+                        <source src="/home-page-video.mp4" type="video/mp4" />
+                    </video>
                 </div>
                 <div className="right-container">
                     <h1>

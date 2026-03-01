@@ -1,0 +1,39 @@
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1000;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 80px;
+    right: 0;
+    width: 300px;
+    min-height: 90vh;
+    background-color: #fff;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.15);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 1001;
+}
+
+/* Links */
+.sidebar a {
+    text-decoration: none;
+    color: #222;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.sidebar a:hover {
+    color: #0077ff;
+}
+
+/* Logout */
+.sidebar button {
+    margin-top: auto;
+}

@@ -1,34 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./navbar.css";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { userContext } from "../context/userContext.jsx";
-import SideBar from "./SideBar.jsx";
 import { shopContext } from "../context/shopContext.jsx";
+import { sideBarContext } from "../context/sidebarContext.jsx";
+import SideBar from "./SideBar.jsx";
 
 export default function Navbar() {
-    const [sideBar, setSideBar] = useState(false);
     const { user, setUser } = useContext(userContext);
     const { shop, setShop } = useContext(shopContext);
-    const navigate = useNavigate();
-
-    async function handleLogout() {
-        try {
-            const response = await fetch(
-                `http://localhost:8000/v1/api/${user ? "users" : "shops"}/logout`,
-                {
-                    method: "POST",
-                    credentials: "include",
-                },
-            );
-
-            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-            setUser(null);
-            setShop(null);
-            navigate("/");
-        } catch (err) {
-            console.error(err.message);
-        }
-    }
+    const { isOpen, setIsOpen } = useContext(sideBarContext);
 
     return (
         <>
@@ -52,7 +33,7 @@ export default function Navbar() {
                             <>
                                 <Link
                                     className="user-info-container"
-                                    onClick={() => setSideBar(true)}
+                                    onClick={() => setIsOpen(!isOpen)}
                                 >
                                     <img
                                         className="user-profile-image"
@@ -63,7 +44,6 @@ export default function Navbar() {
                                         {user ? user.username : shop.shop_name}
                                     </h5>
                                 </Link>
-                                <button onClick={handleLogout}>Logout</button>
                             </>
                         ) : (
                             <>
@@ -78,7 +58,9 @@ export default function Navbar() {
                         )}
                     </ul>
                 </nav>
-                {/* {sideBar && <SideBar user={user} />} */}
+                {isOpen && (
+                    <SideBar user={user} setUser={setUser} setShop={setShop} />
+                )}
             </header>
         </>
     );

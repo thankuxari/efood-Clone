@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import "./index.css";
 import { ShopProvider } from "./context/shopContext.jsx";
 import { ModalProvider } from "./context/modalContext.jsx";
+import { SideBarProvider } from "./context/sidebarContext.jsx";
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
@@ -13,7 +14,9 @@ createRoot(document.getElementById("root")).render(
             <UserProvider>
                 <ShopProvider>
                     <ModalProvider>
-                        <App />
+                        <SideBarProvider>
+                            <App />
+                        </SideBarProvider>
                     </ModalProvider>
                 </ShopProvider>
             </UserProvider>
