@@ -35,7 +35,7 @@ export function UserProvider({ children }) {
     }, []);
 
     return (
-        <userContext.Provider value={{ user, setUser }}>
+        <userContext.Provider value={{ user, setUser, loading }}>
             {!loading && children}
         </userContext.Provider>
     );

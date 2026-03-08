@@ -11,7 +11,8 @@ function usePreviewImage() {
             file.type === "image/png" ||
             file.type === "image/jpg" ||
             file.type === "image/gif" ||
-            file.type === "image/webp"
+            file.type === "image/webp" ||
+            file.type === "image/avif"
         ) {
             const reader = new FileReader();
 

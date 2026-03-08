@@ -54,6 +54,15 @@ export default function ShopPage() {
                     <div className="text-container">
                         <h3>{shopInfo.shop_name}</h3>
                         <h5>{shopInfo.shop_category}</h5>
+                        {!shopInfo.shop_opening_hours ||
+                        !shopInfo.shop_closing_hours ? (
+                            ""
+                        ) : (
+                            <span>
+                                {shopInfo.shop_opening_hours} -
+                                {shopInfo.shop_closing_hours}
+                            </span>
+                        )}
                     </div>
                     <div className="action-container">
                         <span>

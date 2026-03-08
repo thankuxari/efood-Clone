@@ -63,13 +63,17 @@ async function loginUser(req, res) {
 
     try {
         if (!username || !password)
-            throw new Error(`All fiels need to be filled`);
+            return res
+                .status(400)
+                .json({ message: "Όλα τα στοιχεία πρέπει να συμπληρωθούν" });
 
         //Check is the user exists
         const existingUser = await getQuery(sqlLoginUser, [username]);
 
         if (!existingUser)
-            throw new Error("No user with these credentials exists");
+            return res.status(400).json({
+                message: "Λανθασμένα στοιχεία σύνδεσης",
+            });
 
         // Compare the password that the user gave with the one stored in the db
         const isPasswordValid = await bcrypt.compare(
@@ -88,8 +92,7 @@ async function loginUser(req, res) {
             username,
         });
     } catch (err) {
-        console.error(err.message);
-        return res.status(400).json(err.message);
+        return res.status(400).json({ message: err.message });
     }
 }
 

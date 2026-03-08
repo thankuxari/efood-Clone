@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useContext } from "react";
 import { shopContext } from "../context/shopContext.jsx";
 import usePreviewImage from "../hooks/usePreviewImage.js";
+import { enqueueSnackbar } from "notistack";
 import "./shopsettings.css";
 
 export default function ShopSettings() {
@@ -17,6 +18,7 @@ export default function ShopSettings() {
         e.preventDefault();
         setLoading(true);
         try {
+            console.log(openHours, closingHours);
             const response = await fetch(
                 "http://localhost:8000/v1/api/shops/edit_shop",
                 {
@@ -24,7 +26,7 @@ export default function ShopSettings() {
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
                     body: JSON.stringify({
-                        openHours: openHours || "",
+                        openingHours: openHours || "",
                         closingHours: closingHours || "",
                         category: category || "",
                         shop_banner: imageUrl || "",
@@ -33,8 +35,11 @@ export default function ShopSettings() {
             );
 
             if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+            enqueueSnackbar("Οι αλλαγές ολοκληρώθηκαν", { variant: "success" });
+            window.location.reload();
         } catch (err) {
             console.error(err.message);
+            enqueueSnackbar("Κατι πήγε στραβά", { variant: "error" });
         } finally {
             setLoading(false);
         }
@@ -50,7 +55,7 @@ export default function ShopSettings() {
                     <div className="settings-view-container hours-container">
                         <h3>Ωράριο Καταστήματος</h3>
                         <div className="settings-hours-main">
-                            <p>Τωρινό Ωράριο</p>
+                            <p>Τωρινό Ωράριο </p>
                             <p>Αλλαγή ωραρίου:</p>
                             <label htmlFor="open">Άνοιγμα: </label>
                             <input
@@ -75,11 +80,8 @@ export default function ShopSettings() {
                             Επίλεξε μια απο τις παρακάτω κατηγορίες που
                             περιγράφουν το κατάστημα σου!
                         </p>
-                        <select
-                            onChange={(e) => setCategory(e.target.value)}
-                            name=""
-                            id=""
-                        >
+                        <select onChange={(e) => setCategory(e.target.value)}>
+                            <option value="">Επέλεξε κατηγορία</option>
                             <option value="Burgers">Burgers</option>
                             <option value="Γυράδικο">Γυράδικο</option>
                             <option value="Μαγειρευτά">Μαγειρευτά</option>

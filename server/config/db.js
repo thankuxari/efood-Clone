@@ -21,8 +21,12 @@ const sqlUsers = `
     CREATE TABLE IF NOT EXISTS users(
     _id TEXT PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
+    lastname TEXT,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
+    address TEXT,
+    phone TEXT,
+    user_profile TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 )
 `;
@@ -49,6 +53,7 @@ const sqlProducts = `
     price REAL NOT NULL,
     shop_id TEXT NOT NULL,
     product_image TEXT,
+    product_description TEXT,
     FOREIGN KEY (shop_id) REFERENCES shops(_id) ON DELETE CASCADE
 )
 `;

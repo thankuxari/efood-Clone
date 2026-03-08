@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { shopContext } from "../context/shopContext";
+import { enqueueSnackbar } from "notistack";
 import "./login.css";
 
 export default function LoginShop() {
@@ -29,13 +30,17 @@ export default function LoginShop() {
                 },
             );
 
-            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message);
+            }
             const data = await response.json();
             setShop(data);
             navigate("/");
+            enqueueSnackbar("Επιτυχής σύνδεση!", { variant: "success" });
         } catch (err) {
             console.error(err.message);
+            enqueueSnackbar(err.message, { variant: "error" });
         } finally {
             setLoading(false);
         }

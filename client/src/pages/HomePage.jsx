@@ -43,6 +43,8 @@ export default function HomePage() {
                         shop_category,
                         shop_logo,
                         shop_banner,
+                        shop_opening_hours,
+                        shop_closing_hours,
                     }) => (
                         <Link
                             key={_id}
@@ -74,6 +76,17 @@ export default function HomePage() {
                                     {!shop_category
                                         ? "Κατάστημα"
                                         : shop_category}
+                                </span>
+                                <span>
+                                    {!shop_opening_hours ||
+                                    !shop_closing_hours ? (
+                                        ""
+                                    ) : (
+                                        <span>
+                                            {shop_opening_hours} -{" "}
+                                            {shop_closing_hours}
+                                        </span>
+                                    )}
                                 </span>
                             </div>
                         </Link>

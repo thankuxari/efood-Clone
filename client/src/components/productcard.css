@@ -8,9 +8,30 @@
     align-items: center;
 }
 
+.shop-product-image-container {
+    position: relative;
+}
+
 .shop-product-card img {
     width: 90px;
     height: 90px;
     object-fit: cover;
     border-radius: 0.35em;
+}
+
+.shop-product-card i {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 0.35em;
+    background-color: #e5e5ea;
+
+    position: absolute;
+    top: 6px;
+    right: 6px;
 }

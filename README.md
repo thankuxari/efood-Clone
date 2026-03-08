@@ -8,9 +8,10 @@
 
 Το project είναι χωρισμένο σε δύο μέρη:
 
-- **Frontend (Client):** React.js / Vite, Tailwind CSS.
+- **Frontend (Client):** React.js / Vite.
 - **Backend (Server):** Node.js, Express.js.
 - **Database:** SQLITE3.
+- **Server Image Provider:** Cloudinary.
 
 ---
 
@@ -31,5 +32,3 @@ CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
 ```
-
-### 3. Δημιουργία ενός .db αρχείου στο /server σηγκεκριμένα με την ονομασία "database.db"

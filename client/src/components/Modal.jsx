@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import "./modal.css";
 import { createPortal } from "react-dom";
 import { modalContext } from "../context/modalContext";
+import { enqueueSnackbar } from "notistack";
 import usePreviewImage from "../hooks/usePreviewImage.js";
 
 export default function Modal({ products, setProducts }) {
@@ -30,9 +31,16 @@ export default function Modal({ products, setProducts }) {
             );
 
             if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-            const { product_name, price } = await response.json();
+            const { product_name, price, shopId, product_image } =
+                await response.json();
             setOpenModal(false);
-            setProducts([...products, { product_name, price }]);
+            setProducts([
+                ...products,
+                { product_name, price, shopId, product_image },
+            ]);
+            enqueueSnackbar("Ένα καινούργιο προϊον προσθέσηκε!", {
+                variant: "success",
+            });
         } catch (err) {
             console.error(err.message);
         }

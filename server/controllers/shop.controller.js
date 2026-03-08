@@ -49,18 +49,25 @@ async function loginShop(req, res) {
         "SELECT _id, password FROM shops WHERE shop_name = ? OR email = ?";
     try {
         if (!shop_name || !password)
-            throw new Error("All fields must be filled!");
+            return res
+                .status(400)
+                .json({ message: "Όλα τα στοιχεία πρέπει να συμπληρωθούν" });
 
         const existingShop = await getQuery(sqlLoginShop, [shop_name]);
         if (!existingShop)
-            throw new Error("No shop with these credentials exist");
+            return res
+                .status(400)
+                .json({ message: "Λανθασμένα στοιχεία σύνδεσης" });
 
         const isPasswordValid = await bcrypt.compare(
             password,
             existingShop.password,
         );
 
-        if (!isPasswordValid) throw new Error("Invalid Credentials");
+        if (!isPasswordValid)
+            return res
+                .status(400)
+                .json({ message: "Λανθασμένα στοιχεία σύνδεσης" });
 
         generateShopToken(existingShop._id, res);
 
@@ -83,7 +90,7 @@ async function logOut(req, res) {
 
 async function getAllShops(req, res) {
     const sqlGetAllShops =
-        "SELECT _id, shop_name, shop_category, shop_logo ,shop_banner from shops";
+        "SELECT _id, shop_name, shop_category, shop_logo ,shop_banner, shop_opening_hours, shop_closing_hours from shops";
     try {
         const shops = await getQueryAll(sqlGetAllShops);
 
@@ -99,7 +106,7 @@ async function getAllShops(req, res) {
 async function getSingleShop(req, res) {
     const { id } = req.params;
     const sqlGetSingleShop =
-        "SELECT _id, shop_name, shop_category, shop_banner FROM shops WHERE _id = ?";
+        "SELECT _id, shop_name, shop_category, shop_banner, shop_opening_hours, shop_closing_hours FROM shops WHERE _id = ?";
     const sqlGetSingleShopProducts = "SELECT * FROM products WHERE shop_id = ?";
 
     try {
@@ -148,10 +155,12 @@ async function addNewProduct(req, res) {
             product_name,
             price,
             shopId,
-            uploadImageResponse.secure_url,
+            uploadImageResponse?.secure_url,
         ]);
 
-        return res.status(201).json({ product_name, price });
+        return res
+            .status(201)
+            .json({ product_name, price, shopId, product_image });
     } catch (err) {
         console.error(err.message);
         return res.status(400).json("");
@@ -183,7 +192,7 @@ async function editProduct(req, res) {
 }
 
 async function deleteProduct(req, res) {
-    const { id } = req.params;
+    const { id } = req.body;
     const shop_id = req.shop_id;
     const sqlSelectProduct =
         "SELECT * FROM products WHERE _id = ? AND shop_id = ?";
@@ -192,7 +201,10 @@ async function deleteProduct(req, res) {
     try {
         const product = await getQuery(sqlSelectProduct, [id, shop_id]);
 
-        if (!product) throw new Error("The product does not exist!");
+        if (!product)
+            return res
+                .status(400)
+                .json({ message: "The product does not exist!" });
 
         await runQuery(sqlDeleteProduct, [id, shop_id]);
 
@@ -223,19 +235,23 @@ async function editShopInformation(req, res) {
     const shop_id = req.shop_id;
     const sqlGetLoggedInStore = "SELECT _id from shops WHERE _id = ?";
     try {
+        console.log(openingHours, closingHours);
         const shop = await getQuery(sqlGetLoggedInStore, [shop_id]);
 
         if (!shop) throw new Error("No shop logged in");
 
-        const sqlEditOpeningClosingHours =
-            "UPDATE shops SET shop_opening_hours = ?, shop_closing_hours = ? WHERE _id = ?";
+        if (openingHours) {
+            await runQuery(
+                "UPDATE shops SET shop_opening_hours = ? WHERE _id = ?",
+                [openingHours, shop_id],
+            );
+        }
 
-        if (openingHours || closingHours) {
-            await runQuery(sqlEditOpeningClosingHours, [
-                openingHours,
-                closingHours,
-                shop_id,
-            ]);
+        if (closingHours) {
+            await runQuery(
+                "UPDATE shops SET shop_closing_hours = ? WHERE _id = ?",
+                [closingHours, shop_id],
+            );
         }
 
         const sqlEditShopCategory =

@@ -1,5 +1,5 @@
 import { useNavigate, Link } from "react-router-dom";
-import { sideBarContext } from "../context/sidebarContext.jsx";
+import { sideBarContext } from "../../context/sidebarContext.jsx";
 import { useContext } from "react";
 import "./sidebar.css";
 export default function SideBar({ user, setUser, setShop }) {
@@ -30,7 +30,7 @@ export default function SideBar({ user, setUser, setShop }) {
         <div className="sidebar-overlay" onClick={() => setIsOpen(false)}>
             <div className="sidebar" onClick={(e) => e.stopPropagation()}>
                 <Link>Οι παραγγελίες μου</Link>
-                <Link to="/user_settings">Ρυθμίσεις Λογαριασμόυ</Link>
+                <Link to="/user_settings" onClick={() => setIsOpen(false)}>Ρυθμίσεις Λογαριασμόυ</Link>
                 <Link>Ειδοποιήσεις</Link>
                 <button onClick={handleLogout} className="primary-button">
                     Logout

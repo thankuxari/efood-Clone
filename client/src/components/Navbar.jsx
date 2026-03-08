@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { userContext } from "../context/userContext.jsx";
 import { shopContext } from "../context/shopContext.jsx";
 import { sideBarContext } from "../context/sidebarContext.jsx";
-import SideBar from "./SideBar.jsx";
+import SideBar from "./Sidebar/SideBar.jsx";
 
 export default function Navbar() {
     const { user, setUser } = useContext(userContext);
