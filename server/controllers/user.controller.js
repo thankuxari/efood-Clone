@@ -116,20 +116,34 @@ async function addProductToCart(req, res) {
         const sqlGetUsersCart = "SELECT * FROM cart WHERE user_id = ?";
         const userCart = await getQuery(sqlGetUsersCart, [userId]);
 
+        // Check if the item already exists on the users cart
+        let existingItem;
+        const sqlCheckExistingItem =
+            "SELECT * FROM cart_items WHERE cart_id = ? AND product_id = ?";
+        existingItem = await getQuery(sqlCheckExistingItem, [userCart._id, id]);
+
         // Get the product
         const sqlFindProduct = "SELECT * FROM products WHERE _id = ?";
         const product = await getQuery(sqlFindProduct, [id]);
 
         // Add the product
         const itemId = randomUUID();
-        const sqlAddProductToCartItems =
-            "INSERT INTO cart_items(_id, cart_id, product_id, quantity) VALUES(?, ?, ?, ?)";
-        await runQuery(sqlAddProductToCartItems, [
-            itemId,
-            userCart._id,
-            product._id,
-            1,
-        ]);
+
+        if (existingItem) {
+            const sqlUpdateQuantity =
+                "UPDATE cart_items SET quantity = quantity + 1 WHERE _id = ?";
+            await runQuery(sqlUpdateQuantity, [existingItem._id]);
+        } else {
+            const sqlAddProductToCartItems =
+                "INSERT INTO cart_items(_id, cart_id, product_id, product_image, quantity) VALUES(?, ?, ?, ?,?)";
+            await runQuery(sqlAddProductToCartItems, [
+                itemId,
+                userCart._id,
+                product._id,
+                product.product_image,
+                1,
+            ]);
+        }
 
         return res.status(200).json("Product was added successfully!");
     } catch (err) {
@@ -142,6 +156,8 @@ async function getCart(req, res) {
     const userId = req.user_id;
     const sqlGetUsersCart = "SELECT * FROM cart WHERE user_id = ?";
     try {
+        if (!userId) return res.status(400).json({ message: "Unauthorized" });
+
         // Get the users cart
         const cart = await getQuery(sqlGetUsersCart, [userId]);
 
@@ -154,6 +170,7 @@ async function getCart(req, res) {
                 p.product_name,
                 p.price,
                 p.shop_id,
+                p.product_image,
                 ci.quantity
             FROM cart_items ci
             JOIN products p ON p._id = ci.product_id
@@ -161,8 +178,7 @@ async function getCart(req, res) {
         `;
 
         const products = await getQueryAll(sqlGetCartProducts, [cart._id]);
-
-        console.log(products);
+        return res.status(200).json(products);
     } catch (err) {
         console.error(err.message);
         return res.status(400).json(err.message);

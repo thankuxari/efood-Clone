@@ -9,7 +9,7 @@ import SideBar from "./Sidebar/SideBar.jsx";
 export default function Navbar() {
     const { user, setUser } = useContext(userContext);
     const { shop, setShop } = useContext(shopContext);
-    const { isOpen, setIsOpen } = useContext(sideBarContext);
+    const { isOpen, setIsOpen, setSideBarType } = useContext(sideBarContext);
 
     return (
         <>
@@ -31,9 +31,12 @@ export default function Navbar() {
                     <ul>
                         {user || shop ? (
                             <>
-                                <Link
+                                <button
                                     className="user-info-container"
-                                    onClick={() => setIsOpen(!isOpen)}
+                                    onClick={() => {
+                                        setIsOpen(!isOpen);
+                                        setSideBarType("account");
+                                    }}
                                 >
                                     <img
                                         className="user-profile-image"
@@ -43,7 +46,7 @@ export default function Navbar() {
                                     <h5>
                                         {user ? user.username : shop.shop_name}
                                     </h5>
-                                </Link>
+                                </button>
                             </>
                         ) : (
                             <>

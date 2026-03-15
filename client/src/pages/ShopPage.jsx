@@ -1,12 +1,16 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ProductCard from "../components/ProductCard.jsx";
+import CartSidebar from "../components/Sidebar/CartSidebar.jsx";
 import "./shoppage.css";
+import { cartContext } from "../context/cartContext.jsx";
 
 export default function ShopPage() {
     const { id } = useParams();
     const [shop, setShop] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    const { setCart } = useContext(cartContext);
 
     useEffect(() => {
         async function getShopInformation() {
@@ -75,15 +79,23 @@ export default function ShopPage() {
                 </div>
             </div>
             <div className="products-shop-grid">
-                {shopProducts.map((product) => (
-                    <ProductCard
-                        key={product._id}
-                        _id={product._id}
-                        product_name={product.product_name}
-                        price={product.price}
-                        product_image={product.product_image}
-                    />
-                ))}
+                {shopProducts.length === 0 ? (
+                    <h3>Αυτό το κατάστημα δεν έχει προϊόντα</h3>
+                ) : (
+                    shopProducts.map((product) => (
+                        <ProductCard
+                            key={product._id}
+                            _id={product._id}
+                            product_name={product.product_name}
+                            price={product.price}
+                            product_description={product.product_description}
+                            product_image={product.product_image}
+                        />
+                    ))
+                )}
+            </div>
+            <div>
+                <CartSidebar />
             </div>
         </>
     );

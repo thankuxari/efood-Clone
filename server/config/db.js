@@ -51,6 +51,7 @@ const sqlProducts = `
     _id INTEGER PRIMARY KEY AUTOINCREMENT,
     product_name TEXT NOT NULL,
     price REAL NOT NULL,
+    product_description TEXT,
     shop_id TEXT NOT NULL,
     product_image TEXT,
     product_description TEXT,
@@ -71,6 +72,7 @@ const sqlCartItems = `
     _id TEXT PRIMARY KEY,
     cart_id TEXT NOT NULL,
     product_id TEXT NOT NULL,
+    product_image TEXT,
     quantity INTEGER DEFAULT 1,
     FOREIGN KEY (cart_id) REFERENCES cart(_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(_id) ON DELETE CASCADE

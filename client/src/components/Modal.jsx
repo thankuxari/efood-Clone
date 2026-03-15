@@ -9,6 +9,7 @@ export default function Modal({ products, setProducts }) {
     const [form, setForm] = useState({
         product_name: "",
         price: "",
+        product_description: "",
         product_image: "",
     });
 
@@ -31,12 +32,23 @@ export default function Modal({ products, setProducts }) {
             );
 
             if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-            const { product_name, price, shopId, product_image } =
-                await response.json();
+            const {
+                product_name,
+                price,
+                shopId,
+                product_description,
+                product_image,
+            } = await response.json();
             setOpenModal(false);
             setProducts([
                 ...products,
-                { product_name, price, shopId, product_image },
+                {
+                    product_name,
+                    price,
+                    shopId,
+                    product_description,
+                    product_image,
+                },
             ]);
             enqueueSnackbar("Ένα καινούργιο προϊον προσθέσηκε!", {
                 variant: "success",
@@ -66,6 +78,12 @@ export default function Modal({ products, setProducts }) {
                         type="number"
                         name="price"
                         placeholder="Τιμή προϊόντος"
+                        onChange={handleChange}
+                    />
+                    <input
+                        type="text"
+                        name="product_description"
+                        placeholder="Περιγραφή προϊόντος"
                         onChange={handleChange}
                     />
                     <label htmlFor="product_image">

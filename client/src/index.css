@@ -13,6 +13,8 @@
 body {
     font-family: Roboto;
     background-color: #fff;
+    padding-top: 80px;
+    overflow-y: scroll;
 }
 
 .primary-button {

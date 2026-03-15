@@ -137,11 +137,13 @@ async function getLoggedInShopProducts(req, res) {
 }
 
 async function addNewProduct(req, res) {
-    const { product_name, price, product_image } = req.body;
+    const { product_name, price, product_description, product_image } =
+        req.body;
     const shopId = req.shop_id;
     const sqlAddNewProduct =
-        "INSERT INTO products(product_name, price, shop_id, product_image) VALUES(?, ?, ?, ?)";
+        "INSERT INTO products(product_name, price, shop_id, product_description, product_image) VALUES(?, ?, ?, ?, ?)";
     try {
+        console.log("desc: ",product_description);
         if (!product_name || !price)
             throw new Error("All fields must be filled!");
 
@@ -155,6 +157,7 @@ async function addNewProduct(req, res) {
             product_name,
             price,
             shopId,
+            product_description,
             uploadImageResponse?.secure_url,
         ]);
 
@@ -218,7 +221,7 @@ async function deleteProduct(req, res) {
 async function getLoggedInShop(req, res) {
     const shopId = req.shop_id;
     const sqlGetLoggedInShop =
-        "SELECT _id, shop_name, email, shop_logo, shop_banner from shops where _id = ?";
+        "SELECT _id, shop_name, email, shop_logo, shop_banner, shop_opening_hours, shop_closing_hours from shops where _id = ?";
     try {
         const shop = await getQuery(sqlGetLoggedInShop, [shopId]);
 

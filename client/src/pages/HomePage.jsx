@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./homepage.css";
+import { cartContext } from "../context/cartContext";
 
 export default function HomePage() {
     const [shops, setShops] = useState([]);
@@ -30,11 +31,12 @@ export default function HomePage() {
 
     if (loading) return <h1>Loading...</h1>;
 
-    console.log(shops);
-
     return (
         <div className="homepage-container">
-            <h1>{shops.length} Καταστήματα</h1>
+            <h1>
+                {shops.length}{" "}
+                {shops.length === 1 ? "Κατάστημα" : "Καταστήματα"}
+            </h1>
             <div className="shop-grid">
                 {shops.map(
                     ({

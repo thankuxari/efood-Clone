@@ -55,7 +55,10 @@ export default function ShopSettings() {
                     <div className="settings-view-container hours-container">
                         <h3>Ωράριο Καταστήματος</h3>
                         <div className="settings-hours-main">
-                            <p>Τωρινό Ωράριο </p>
+                            <p>
+                                Τωρινό Ωράριο : {shop?.shop_opening_hours} -{" "}
+                                {shop?.shop_closing_hours}
+                            </p>
                             <p>Αλλαγή ωραρίου:</p>
                             <label htmlFor="open">Άνοιγμα: </label>
                             <input

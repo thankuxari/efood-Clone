@@ -2,59 +2,84 @@ header {
     background-color: var(--primary-background-color);
     width: 100%;
     height: 12vh;
-    box-shadow:
-        rgba(50, 50, 93, 0.25) 0px 10px 30px -10px,
-        rgba(0, 0, 0, 0.3) 0px 10px 20px -10px;
     z-index: 2000;
-    position: relative;
+    position: fixed;
+    top: 0;
+
+    box-shadow:
+        rgba(50, 50, 93, 0.15) 0px 8px 20px -8px,
+        rgba(0, 0, 0, 0.15) 0px 8px 15px -10px;
 }
 
 nav {
     display: flex;
-    height: 100%;
     align-items: center;
     justify-content: space-between;
-    padding: 0 2rem;
+    height: 100%;
+    padding: 0 2.5rem;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 header img {
-    height: 90px;
+    height: 70px;
     width: auto;
     object-fit: contain;
 }
 
+.logo-container h3 {
+    color: white;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
 nav ul {
     display: flex;
-    gap: 2.5rem;
+    align-items: center;
+    gap: 2rem;
     list-style: none;
     padding: 0;
     margin: 0;
-    align-items: center;
 }
 
-nav a {
+nav a,
+nav button {
     text-decoration: none;
     color: white;
     font-weight: 600;
-    transition: 0.2s ease;
     font-size: 0.95rem;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.15s ease;
 }
 
-nav a:hover {
-    opacity: 0.8;
+nav a:hover,
+nav button:hover {
+    opacity: 0.85;
 }
 
 .search-bar-input {
     width: 350px;
-    padding: 0.75em 1.5em;
+    padding: 0.65em 1.4em;
     border: none;
-    border-radius: 999px;
+    border-radius: 50px;
     background-color: #ad0909;
     color: white;
+    transition: background-color 0.2s ease;
 }
 
 .search-bar-input::placeholder {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.75);
 }
 
 .search-bar-input:focus {
@@ -65,27 +90,31 @@ nav a:hover {
 .user-info-container {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
+
+    background: none;
+    border: none;
+    padding: 0.35rem 0.6rem;
+
+    cursor: pointer;
+    border-radius: 8px;
+
+    color: white;
+    font: inherit;
+
+    transition:
+        background-color 0.2s ease,
+        opacity 0.2s ease;
 }
 
 .user-info-container h5 {
-    font-size: 1rem;
+    font-size: 0.95rem;
     margin: 0;
 }
 
 .user-profile-image {
-    width: 35px;
-    height: 35px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     object-fit: cover;
-}
-
-.logo-container {
-    display: flex;
-    align-items: center;
-}
-
-.logo-container h3 {
-    color: #fff;
-    font-weight: 900;
 }
