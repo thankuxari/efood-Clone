@@ -224,22 +224,71 @@ async function getLoggedInUser(req, res) {
     }
 }
 
-// async function completeOrder(req, res) {
-//     const { id } = req.body;
-//     const userId = req.user_id;
+async function completeOrder(req, res) {
+    const { address, paymentMethod, totalPrice, cart } = req.body;
+    const userId = req.user_id;
+    const orderId = randomUUID();
+    try {
+        if (!address || !paymentMethod)
+            return res
+                .status(400)
+                .json({ message: "you need to fill all the fields!" });
 
-//     try {
-//         // Get the cart by the id
-//         const sqlGetUsersCart =
-//             "SELECT * FROM cart WHERE _id = ? AND user_id ?";
-//         const cart = await getQuery(sqlGetUsersCart, [id, userId]);
+        if (!userId) return res.status(400).json({ message: "no user token" });
 
-//         console.log(cart);
-//     } catch (err) {
-//         console.error(err.message);
-//         return res.status(400).json(err.message);
-//     }
-// }
+        const sqlCreateOrder =
+            "INSERT INTO orders(_id, user_id, total_price, address, payment_method) values(?,?,?,?,?)";
+
+        await runQuery(sqlCreateOrder, [
+            orderId,
+            userId,
+            totalPrice,
+            address,
+            paymentMethod,
+        ]);
+
+        const sqlAddProductItemToTheOrder =
+            "INSERT INTO order_items(_id, order_id, product_name, product_id, quantity, price) values (?,?,?,?,?,?)";
+        for (const product of cart) {
+            await runQuery(sqlAddProductItemToTheOrder, [
+                randomUUID(),
+                orderId,
+                product.product_name,
+                product.product_id,
+                product.quantity,
+                product.price,
+            ]);
+        }
+
+        const sqlGetUsersCart = "SELECT _id from cart WHERE user_id = ?";
+        const cartID = await getQuery(sqlGetUsersCart, [userId]);
+        const sqlResetCart = "DELETE from cart_items WHERE cart_id = ?";
+        await runQuery(sqlResetCart, [cartID._id]);
+
+        return res
+            .status(200)
+            .json({ message: "Order completed successfully!", orderId });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
+async function searchForShops(req, res) {
+    const { query } = req.body;
+    const userId = req.userId;
+    try {
+        if (query === "") return;
+        const sqlSearchQuery =
+            "SELECT _id, shop_name, shop_logo FROM shops WHERE shop_name LIKE ?";
+        const result = await getQueryAll(sqlSearchQuery, [`%${query}%`]);
+
+        return res.status(200).json({ result });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json({ message: err.message });
+    }
+}
 
 export {
     signUpUser,
@@ -249,4 +298,6 @@ export {
     getCart,
     deleteProductFromCart,
     getLoggedInUser,
+    completeOrder,
+    searchForShops,
 };

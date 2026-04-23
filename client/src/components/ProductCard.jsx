@@ -23,14 +23,7 @@ export default function ProductCard({
                 <h4>{formatMoney(price)}</h4>
             </div>
             <div className="shop-product-image-container">
-                <img
-                    src={
-                        product_image
-                            ? product_image
-                            : "/shop_default_banner.jpg"
-                    }
-                    alt=""
-                />
+                {product_image && <img src={product_image} alt="" />}
                 <i className="fa-solid fa-plus" onClick={handleAddToCart}></i>
             </div>
         </div>

@@ -10,8 +10,6 @@ export default function ShopPage() {
     const [shop, setShop] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const { setCart } = useContext(cartContext);
-
     useEffect(() => {
         async function getShopInformation() {
             setLoading(true);
@@ -38,6 +36,7 @@ export default function ShopPage() {
     if (!shop) return <div>No shop was found!</div>;
 
     const { shopInfo, shopProducts } = shop;
+    console.log(shopInfo);
 
     return (
         <>
@@ -54,7 +53,7 @@ export default function ShopPage() {
                     />
                 </div>
                 <div className="lower-container">
-                    <img src="/shop_default_profile.jpg" alt="" />
+                    <img src={shopInfo?.shop_logo} alt="" />
                     <div className="text-container">
                         <h3>{shopInfo.shop_name}</h3>
                         <h5>{shopInfo.shop_category}</h5>

@@ -1,0 +1,30 @@
+.search-bar {
+    position: relative;
+}
+
+.search-bar-input {
+    width: 350px;
+    padding: 0.65em 1.4em;
+    border: none;
+    border-radius: 50px;
+    background-color: #ad0909;
+    color: white;
+    transition: background-color 0.2s ease;
+}
+
+.search-bar-input::placeholder {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.search-bar-input:focus {
+    outline: none;
+    background-color: #960808;
+}
+
+.search-bar-dropdown-result {
+    position: absolute;
+    width: 100%;
+    background-color: aliceblue;
+    height: 150px;
+    overflow: hidden;
+}

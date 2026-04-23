@@ -5,6 +5,7 @@ import { userContext } from "../context/userContext.jsx";
 import { shopContext } from "../context/shopContext.jsx";
 import { sideBarContext } from "../context/sidebarContext.jsx";
 import SideBar from "./Sidebar/SideBar.jsx";
+import SearchBar from "./SearchBar.jsx";
 
 export default function Navbar() {
     const { user, setUser } = useContext(userContext);
@@ -19,15 +20,7 @@ export default function Navbar() {
                         <img src="/logo.png" alt="" />
                         {shop && <h3>PARTNER</h3>}
                     </Link>
-                    {(user || shop) && (
-                        <form action="">
-                            <input
-                                className="search-bar-input"
-                                type="search"
-                                placeholder="Αναζήτηση"
-                            />
-                        </form>
-                    )}
+                    {user && <SearchBar />}
                     <ul>
                         {user || shop ? (
                             <>

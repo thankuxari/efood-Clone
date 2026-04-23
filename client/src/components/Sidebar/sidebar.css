@@ -11,7 +11,7 @@
     top: 80px;
     right: 0;
     width: 300px;
-    min-height: 90vh;
+    height: calc(100vh - 80px);
     background-color: #fff;
     box-shadow: -4px 0 15px rgba(0, 0, 0, 0.15);
     padding: 2rem 1.5rem;

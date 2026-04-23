@@ -32,6 +32,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
+}
+
+.product-card h3 {
+    font-size: 0.975rem;
+}
+
+.product-card .description {
+    font-weight: 300;
+}
+
+.product-card h4 {
+    font-weight: 400;
 }
 
 .product-card img {
@@ -45,6 +58,7 @@
     padding: 1em 0.25em;
     display: flex;
     flex-direction: column;
+    gap: 8px;
 }
 
 .product-image-container {

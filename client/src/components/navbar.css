@@ -1,7 +1,7 @@
 header {
     background-color: var(--primary-background-color);
     width: 100%;
-    height: 12vh;
+    height: 80px;
     z-index: 2000;
     position: fixed;
     top: 0;
@@ -66,25 +66,6 @@ nav button {
 nav a:hover,
 nav button:hover {
     opacity: 0.85;
-}
-
-.search-bar-input {
-    width: 350px;
-    padding: 0.65em 1.4em;
-    border: none;
-    border-radius: 50px;
-    background-color: #ad0909;
-    color: white;
-    transition: background-color 0.2s ease;
-}
-
-.search-bar-input::placeholder {
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.search-bar-input:focus {
-    outline: none;
-    background-color: #960808;
 }
 
 .user-info-container {

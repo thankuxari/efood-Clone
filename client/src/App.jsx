@@ -16,6 +16,8 @@ import LoginShop from "./pages/LoginShop.jsx";
 import { shopContext } from "./context/shopContext.jsx";
 import { modalContext } from "./context/modalContext.jsx";
 import "./App.css";
+import CompleteOrder from "./pages/CompleteOrder.jsx";
+import ThankYouPage from "./pages/ThankYouPage.jsx";
 
 function App() {
     const { user } = useContext(userContext);
@@ -48,10 +50,9 @@ function App() {
                     <Route path="shops/:id" element={<ShopPage />} />
                     <Route path="/signup_shops" element={<SignUpShops />} />
                     <Route path="/login_shop" element={<LoginShop />} />
-                    <Route
-                        path="/user_settings"
-                        element={<UserSettings />}
-                    ></Route>
+                    <Route path="/user_settings" element={<UserSettings />} />
+                    <Route path="/complete_order" element={<CompleteOrder />} />
+                    <Route path="/thank_you" element={<ThankYouPage />} />
                 </Routes>
             </div>
         </>

@@ -1,17 +1,12 @@
 import { useContext } from "react";
 import { cartContext } from "../../context/cartContext.jsx";
-import formatMoney from "../../utils/formatMoney.js";
+import { Link } from "react-router-dom";
+import calculateCartTotalSum from "../../utils/calculateCartTotalSum.js";
+import calculateCartSingleItemSum from "../../utils/calculateCartSingleItemSum.js";
 import "./cartsidebar.css";
 
 export default function CartSidebar() {
     const { cart, loading } = useContext(cartContext);
-
-    let totalSum = 0;
-    for (let i = 0; i < cart.length; i++) {
-        totalSum += cart[i].price * cart[i].quantity;
-    }
-
-    console.log(cart);
 
     return (
         <div className="cart-sidebar">
@@ -42,22 +37,27 @@ export default function CartSidebar() {
 
                             <div>
                                 <h3>{product.product_name}</h3>
-                                <h4>{formatMoney(product.price)}</h4>
+                                <h4>{calculateCartSingleItemSum(product)}</h4>
                             </div>
 
-                            <div>
+                            {product?.product_image && (
                                 <img src={product.product_image} alt="" />
-                            </div>
+                            )}
                         </div>
                     ))}
 
                     <div className="cart-order-summary-container">
                         <div>
-                            <h3>Σύνολο πληρωμής: {formatMoney(totalSum)}</h3>
+                            <h3>
+                                Σύνολο πληρωμής: {calculateCartTotalSum(cart)}
+                            </h3>
                         </div>
-                        <button className="primary-button">
+                        <Link
+                            to={"/complete_order/"}
+                            className="primary-button"
+                        >
                             Ολοκλήρωση Παραγγελίας
-                        </button>
+                        </Link>
                     </div>
                 </>
             )}

@@ -48,13 +48,12 @@ const sqlShops = `
 
 const sqlProducts = `
     CREATE TABLE IF NOT EXISTS products(
-    _id INTEGER PRIMARY KEY AUTOINCREMENT,
+    _id TEXT NOT NULL PRIMARY KEY,
     product_name TEXT NOT NULL,
     price REAL NOT NULL,
     product_description TEXT,
     shop_id TEXT NOT NULL,
     product_image TEXT,
-    product_description TEXT,
     FOREIGN KEY (shop_id) REFERENCES shops(_id) ON DELETE CASCADE
 )
 `;
@@ -79,13 +78,31 @@ const sqlCartItems = `
 )
 `;
 
-// const sqlOrders = `
-//     CREATE TABLE IF NOT EXISTS orders(
-//     _id TEXT PRIMARY KEY,
-//     cart_id TEXT NOT NULL,
+const sqlOrders = `
+    CREATE TABLE IF NOT EXISTS orders(
+    _id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    total_price REAL NOT NULL,
+    status TEXT NOT NULL DEFAULT 'active',
+    address TEXT NOT NULL,
+    payment_method TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(_id) ON DELETE CASCADE
+)
+`;
 
-// )
-// `;
+const sqlOrderItems = `
+    CREATE TABLE IF NOT EXISTS order_items(
+    _id TEXT PRIMARY KEY,
+    product_name TEXT NOT NULL,
+    order_id TEXT NOT NULL,
+    product_id TEXT,
+    quantity INTEGER NOT NULL,
+    price REAL NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(_id) ON DELETE CASCADE,
+    FOREIGN KEY (order_id) REFERENCES orders(_id) ON DELETE SET NULL    
+    )
+`;
 
 DB.serialize(() => {
     DB.run("PRAGMA foreign_keys = ON");
@@ -138,6 +155,26 @@ DB.serialize(() => {
             );
         }
         console.log("The table 'cart_items' was created");
+    });
+
+    // FOR THE ORDERS
+    DB.run(sqlOrders, [], (err) => {
+        if (err) {
+            throw new Error(
+                `Error trying to create the table with the orders ${err.message}`,
+            );
+        }
+        console.log("The table 'orders' was created");
+    });
+
+    // FOR THE ORDERS ITEMS
+    DB.run(sqlOrderItems, [], (err) => {
+        if (err) {
+            throw new Error(
+                `Error trying to create the table with the order_items ${err.message}`,
+            );
+        }
+        console.log("The table 'orders_items' was created");
     });
 });
 

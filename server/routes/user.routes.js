@@ -7,9 +7,10 @@ import {
     getCart,
     deleteProductFromCart,
     getLoggedInUser,
+    completeOrder,
+    searchForShops,
 } from "../controllers/user.controller.js";
 import verifyUserToken from "../middleware/verifyUserToken.js";
-import { deleteProduct } from "../controllers/shop.controller.js";
 
 const userRouter = express.Router();
 
@@ -19,6 +20,8 @@ userRouter.post("/logout", logOut);
 userRouter.post("/add_cart", verifyUserToken, addProductToCart);
 userRouter.get("/get_cart", verifyUserToken, getCart);
 userRouter.delete("/delete_item", verifyUserToken, deleteProductFromCart);
+userRouter.post("/complete_order", verifyUserToken, completeOrder);
+userRouter.post("/search", verifyUserToken, searchForShops);
 userRouter.get("/me", verifyUserToken, getLoggedInUser);
 
 export default userRouter;

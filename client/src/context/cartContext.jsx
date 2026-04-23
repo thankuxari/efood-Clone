@@ -39,6 +39,26 @@ export function CartProvider({ children }) {
 
     async function addToCart(product) {
         try {
+            setCart((prev) => {
+                const existing = prev.find(
+                    (p) =>
+                        p.product_id === product._id || p._id === product._id,
+                );
+
+                if (existing) {
+                    return prev.map((p) =>
+                        p.product_id === product._id || p._id === product._id
+                            ? { ...p, quantity: (p.quantity || 0) + 1 }
+                            : p,
+                    );
+                }
+
+                return [
+                    ...prev,
+                    { ...product, quantity: 1, product_id: product._id },
+                ];
+            });
+
             const response = await fetch(
                 "http://localhost:8000/v1/api/users/add_cart",
                 {
@@ -50,19 +70,6 @@ export function CartProvider({ children }) {
             );
 
             if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
-
-            setCart((prev) => {
-                const existing = prev.find((p) => p.product_id === product._id);
-                if (existing) {
-                    return prev.map((p) =>
-                        p.product_id === product._id
-                            ? { ...p, quantity: p.quantity + 1 }
-                            : p,
-                    );
-                }
-
-                return [...prev, { ...product, quantity: 1 }];
-            });
         } catch (err) {
             console.error(err.message);
         }

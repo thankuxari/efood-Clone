@@ -46,7 +46,7 @@ async function signUpShop(req, res) {
 async function loginShop(req, res) {
     const { shop_name, password } = req.body;
     const sqlLoginShop =
-        "SELECT _id, password FROM shops WHERE shop_name = ? OR email = ?";
+        "SELECT _id, shop_name, shop_category, shop_logo ,shop_banner, shop_opening_hours, shop_closing_hours, password FROM shops WHERE shop_name = ? OR email = ?";
     try {
         if (!shop_name || !password)
             return res
@@ -71,7 +71,9 @@ async function loginShop(req, res) {
 
         generateShopToken(existingShop._id, res);
 
-        return res.status(200).json({ _id: existingShop._id, shop_name });
+        const { password: _, ...shopData } = existingShop;
+
+        return res.status(200).json({ ...shopData });
     } catch (err) {
         console.error(err.message);
         return res.status(400).json(err.message);
@@ -106,7 +108,7 @@ async function getAllShops(req, res) {
 async function getSingleShop(req, res) {
     const { id } = req.params;
     const sqlGetSingleShop =
-        "SELECT _id, shop_name, shop_category, shop_banner, shop_opening_hours, shop_closing_hours FROM shops WHERE _id = ?";
+        "SELECT _id, shop_name, shop_category, shop_banner, shop_opening_hours, shop_closing_hours,shop_logo FROM shops WHERE _id = ?";
     const sqlGetSingleShopProducts = "SELECT * FROM products WHERE shop_id = ?";
 
     try {
@@ -141,9 +143,10 @@ async function addNewProduct(req, res) {
         req.body;
     const shopId = req.shop_id;
     const sqlAddNewProduct =
-        "INSERT INTO products(product_name, price, shop_id, product_description, product_image) VALUES(?, ?, ?, ?, ?)";
+        "INSERT INTO products(_id, product_name, price, shop_id, product_description, product_image) VALUES(?,?, ?, ?, ?, ?)";
     try {
-        console.log("desc: ",product_description);
+        const id = randomUUID();
+
         if (!product_name || !price)
             throw new Error("All fields must be filled!");
 
@@ -154,6 +157,7 @@ async function addNewProduct(req, res) {
         }
 
         await runQuery(sqlAddNewProduct, [
+            id,
             product_name,
             price,
             shopId,
@@ -161,9 +165,14 @@ async function addNewProduct(req, res) {
             uploadImageResponse?.secure_url,
         ]);
 
-        return res
-            .status(201)
-            .json({ product_name, price, shopId, product_image });
+        return res.status(201).json({
+            product_name,
+            price,
+            shopId,
+            product_image,
+            product_description,
+            _id: id,
+        });
     } catch (err) {
         console.error(err.message);
         return res.status(400).json("");
@@ -221,7 +230,7 @@ async function deleteProduct(req, res) {
 async function getLoggedInShop(req, res) {
     const shopId = req.shop_id;
     const sqlGetLoggedInShop =
-        "SELECT _id, shop_name, email, shop_logo, shop_banner, shop_opening_hours, shop_closing_hours from shops where _id = ?";
+        "SELECT _id, shop_name, email, shop_logo, shop_banner, shop_opening_hours, shop_closing_hours, shop_category from shops where _id = ?";
     try {
         const shop = await getQuery(sqlGetLoggedInShop, [shopId]);
 
@@ -238,7 +247,6 @@ async function editShopInformation(req, res) {
     const shop_id = req.shop_id;
     const sqlGetLoggedInStore = "SELECT _id from shops WHERE _id = ?";
     try {
-        console.log(openingHours, closingHours);
         const shop = await getQuery(sqlGetLoggedInStore, [shop_id]);
 
         if (!shop) throw new Error("No shop logged in");
@@ -295,6 +303,57 @@ async function editShopInformation(req, res) {
     }
 }
 
+async function getShopOrders(req, res) {
+    const shop_id = req.shop_id;
+    try {
+        const sqlGetShopOrders = `SELECT DISTINCT o.*
+                            FROM orders o
+                            JOIN order_items oi ON oi.order_id = o._id
+                            JOIN products p ON p._id = oi.product_id
+                            WHERE p.shop_id = ? AND status='active'`;
+
+        const orders = await getQueryAll(sqlGetShopOrders, [shop_id]);
+
+        const sqlGetOrdersProducts = `SELECT * FROM order_items WHERE order_id = ?`;
+        const sqlGetOrdersCustomer = `SELECT username FROM users WHERE _id = ?`;
+        let order_items;
+        let order_customer;
+        for (let i = 0; i < orders.length; i++) {
+            order_items = await getQueryAll(sqlGetOrdersProducts, [
+                orders[i]._id,
+            ]);
+
+            order_customer = await getQuery(sqlGetOrdersCustomer, [
+                orders[i].user_id,
+            ]);
+
+            orders[i].items = order_items;
+            orders[i].customer_name = order_customer.username;
+        }
+
+        return res.status(200).json({ orders });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
+async function editOrderStatus(req, res) {
+    const { order_id } = req.body;
+    const shop_id = req.shop_id;
+    try {
+        const sqlUpdateOrderStatus =
+            "UPDATE orders SET status = 'complete' where _id = ?";
+
+        await runQuery(sqlUpdateOrderStatus, [order_id]);
+
+        return res.status(200).json({ message: "complete" });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
 export {
     signUpShop,
     loginShop,
@@ -307,4 +366,6 @@ export {
     getLoggedInShop,
     getLoggedInShopProducts,
     editShopInformation,
+    getShopOrders,
+    editOrderStatus,
 };

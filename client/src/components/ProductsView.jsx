@@ -54,6 +54,7 @@ export default function ProductsView() {
             </>
         );
 
+    console.log(products);
     return (
         <div className="products-view-container">
             <div className="products-view-header">
@@ -69,33 +70,37 @@ export default function ProductsView() {
                 </button>
             </div>
             <div className="products-grid">
-                {products.map(({ _id, product_name, price, product_image }) => (
-                    <div className="product-card" key={_id}>
-                        <div className="product-information-container">
-                            <h3>{product_name}</h3>
-                            <h4>{formatMoney(price)}</h4>
-                        </div>
+                {products.map(
+                    ({
+                        _id,
+                        product_name,
+                        price,
+                        product_image,
+                        product_description,
+                    }) => (
+                        <div className="product-card" key={_id}>
+                            <div className="product-information-container">
+                                <h3>{product_name}</h3>
+                                <h3 className="description">
+                                    {product_description}
+                                </h3>
+                                <h4>{formatMoney(price)}</h4>
+                            </div>
 
-                        <div className="product-image-container">
-                            <div className="product-actions-container">
-                                <DeleteButton
-                                    id={_id}
-                                    products={products}
-                                    setProducts={setProducts}
-                                />
-                                <i className="fa-regular fa-pen-to-square fa-fw"></i>
-                            </div>  
-                            <img
-                                src={
-                                    !product_image
-                                        ? "https://placehold.co/150x100"
-                                        : product_image
-                                }
-                                alt=""
-                            />
+                            <div className="product-image-container">
+                                <div className="product-actions-container">
+                                    <DeleteButton
+                                        id={_id}
+                                        products={products}
+                                        setProducts={setProducts}
+                                    />
+                                    <i className="fa-regular fa-pen-to-square fa-fw"></i>
+                                </div>
+                                {product_image && <img src={product_image} />}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ),
+                )}
             </div>
             {openModal && (
                 <Modal products={products} setProducts={setProducts} />

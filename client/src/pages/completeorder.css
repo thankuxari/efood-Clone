@@ -1,0 +1,43 @@
+.complete-order-container {
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    margin-top: 2em;
+    border-radius: 0.35em;
+    display: flex;
+    gap: 20px;
+}
+
+.order-left-container {
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f4f4;
+    width: 50%;
+    padding: 0.85em;
+    border-radius: 0.35em;
+}
+
+.order-left-container .address-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.address-container input {
+    padding: 0.65em 1.4em;
+    border-radius: 0.45em;
+    border: none;
+}
+
+.order-right-container {
+    background-color: #f4f4f4;
+    width: 50%;
+    padding: 0.85em;
+    border-radius: 0.35em;
+}
+
+.order-title {
+    border-bottom: 2px solid #e5e5ea;
+    margin-bottom: 0.5em;
+}

@@ -11,7 +11,15 @@ export default function ShopSettings() {
     const [category, setCategory] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const { handleImageChange, imageUrl } = usePreviewImage();
+    const {
+        handleImageChange: handleBannerImageChange,
+        imageUrl: bannerImageUrl,
+    } = usePreviewImage();
+    const {
+        handleImageChange: handleProfileImageChange,
+        imageUrl: profileImageUrl,
+    } = usePreviewImage();
+
     const { shop } = useContext(shopContext);
 
     async function handleSubmit(e) {
@@ -29,7 +37,8 @@ export default function ShopSettings() {
                         openingHours: openHours || "",
                         closingHours: closingHours || "",
                         category: category || "",
-                        shop_banner: imageUrl || "",
+                        shop_banner: bannerImageUrl || "",
+                        shop_logo: profileImageUrl || "",
                     }),
                 },
             );
@@ -44,6 +53,8 @@ export default function ShopSettings() {
             setLoading(false);
         }
     }
+
+    if (loading) return <div>Φορτώνει...</div>;
 
     return (
         <div className="settings-container">
@@ -64,12 +75,14 @@ export default function ShopSettings() {
                             <input
                                 type="time"
                                 id="open"
+                                defaultValue={shop?.shop_opening_hours}
                                 onChange={(e) => setOpenHours(e.target.value)}
                             />
                             <label htmlFor="close">Κλείσιμο: </label>
                             <input
                                 type="time"
                                 id="close"
+                                defaultValue={shop?.shop_closing_hours}
                                 onChange={(e) =>
                                     setClosingHours(e.target.value)
                                 }
@@ -83,7 +96,12 @@ export default function ShopSettings() {
                             Επίλεξε μια απο τις παρακάτω κατηγορίες που
                             περιγράφουν το κατάστημα σου!
                         </p>
-                        <select onChange={(e) => setCategory(e.target.value)}>
+                        <select
+                            defaultValue={
+                                shop.shop_category ? shop.shop_category : ""
+                            }
+                            onChange={(e) => setCategory(e.target.value)}
+                        >
                             <option value="">Επέλεξε κατηγορία</option>
                             <option value="Burgers">Burgers</option>
                             <option value="Γυράδικο">Γυράδικο</option>
@@ -94,18 +112,35 @@ export default function ShopSettings() {
                         </select>
                         <button type="submit">Αλλαγή</button>
                     </div>
+                    <div className="setting-view-container profile-image-container">
+                        <h3>Αλλαγή Φωτογραφίας Μαγαζίου</h3>
+                        <p>Άλλαξε την εικόνα του μαγαζίου σου!</p>
+                        <img
+                            src={
+                                profileImageUrl ||
+                                shop?.shop_logo ||
+                                "https://placehold.co/50x50"
+                            }
+                            alt=""
+                        />
+                        <input
+                            type="file"
+                            onChange={handleProfileImageChange}
+                        />
+                        <button type="submit">Αλλαγή</button>
+                    </div>
                     <div className="settings-view-container banner-container">
                         <h3>Αλλαγή Φωτογραφίας Banner</h3>
                         <p>Άλλαξε το banner του μαγαζίου σου!</p>
                         <img
                             src={
-                                imageUrl ||
+                                bannerImageUrl ||
                                 shop?.shop_banner ||
                                 "/shop_default_banner.jpg"
                             }
                             alt=""
                         />
-                        <input type="file" onChange={handleImageChange} />
+                        <input type="file" onChange={handleBannerImageChange} />
                         <button type="submit">Αλλαγή</button>
                     </div>
                 </form>
