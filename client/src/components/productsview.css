@@ -1,4 +1,5 @@
 .products-view-container {
+    padding: 20px;
     height: 480px;
     display: flex;
     flex-direction: column;

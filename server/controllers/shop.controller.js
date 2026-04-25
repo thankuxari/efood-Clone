@@ -354,6 +354,30 @@ async function editOrderStatus(req, res) {
     }
 }
 
+async function filterSearchResultByCategory(req, res) {
+    const { category } = req.query;
+    try {
+        if (!category)
+            return res.status(400).json({ message: "Κάτι πήγε λάθος" });
+
+        const sqlGetFilteredShops =
+            "SELECT * FROM shops WHERE shop_category = ?";
+
+        const result = await getQueryAll(sqlGetFilteredShops, [category]);
+
+        if (!result)
+            return res.status(400).json({
+                message:
+                    "Δεν βρέθηκαν καταστήματα με βάση την παρακάτω κατηγορία",
+            });
+
+        return res.status(200).json(result);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json({ message: err.message });
+    }
+}
+
 export {
     signUpShop,
     loginShop,
@@ -368,4 +392,5 @@ export {
     editShopInformation,
     getShopOrders,
     editOrderStatus,
+    filterSearchResultByCategory,
 };

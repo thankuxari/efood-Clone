@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { enqueueSnackbar } from "notistack";
+import formatMoney from "../utils/formatMoney";
 import "./ordersview.css";
 
 export default function OrdersView() {
@@ -109,7 +110,9 @@ export default function OrdersView() {
                                         >
                                             <span>{item.product_name}</span>
                                             <span>x{item.quantity}</span>
-                                            <span>{item.price}</span>
+                                            <span>
+                                                {formatMoney(item.price)}
+                                            </span>
                                         </div>
                                     ))}
                                 </div>

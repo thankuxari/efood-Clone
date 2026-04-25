@@ -1,9 +1,8 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard.jsx";
 import CartSidebar from "../components/Sidebar/CartSidebar.jsx";
 import "./shoppage.css";
-import { cartContext } from "../context/cartContext.jsx";
 
 export default function ShopPage() {
     const { id } = useParams();
@@ -40,7 +39,9 @@ export default function ShopPage() {
 
     return (
         <>
-            <Link to="/">&larr; Πίσω</Link>
+            <Link to="/" className="back-button">
+                <span>←</span> Πίσω
+            </Link>
             <div className="shop-info-container">
                 <div className="top-container">
                     <img

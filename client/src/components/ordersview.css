@@ -5,7 +5,10 @@
 }
 
 .orders-list {
-    max-height: 500px;
+    display: grid;
+    max-height: 400px;
+    grid-template-columns: auto;
+    flex: 1;
     overflow-y: auto;
     padding-right: 5px;
     margin-top: 25px;

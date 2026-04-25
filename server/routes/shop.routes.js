@@ -13,6 +13,7 @@ import {
     editShopInformation,
     getShopOrders,
     editOrderStatus,
+    filterSearchResultByCategory,
 } from "../controllers/shop.controller.js";
 import verifyShopToken from "../middleware/verifyShopToken.js";
 
@@ -22,6 +23,7 @@ shopRouter.post("/signup", signUpShop);
 shopRouter.post("/login", loginShop);
 shopRouter.post("/logout", logOut);
 shopRouter.get("/", getAllShops);
+shopRouter.get("/category", filterSearchResultByCategory);
 shopRouter.get("/me", verifyShopToken, getLoggedInShop);
 shopRouter.get("/get_orders", verifyShopToken, getShopOrders);
 shopRouter.get("/shop_products", verifyShopToken, getLoggedInShopProducts);
