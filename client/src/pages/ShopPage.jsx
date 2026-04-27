@@ -35,7 +35,6 @@ export default function ShopPage() {
     if (!shop) return <div>No shop was found!</div>;
 
     const { shopInfo, shopProducts } = shop;
-    console.log(shopInfo);
 
     return (
         <>

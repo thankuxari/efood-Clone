@@ -6,7 +6,44 @@ import calculateCartSingleItemSum from "../../utils/calculateCartSingleItemSum.j
 import "./cartsidebar.css";
 
 export default function CartSidebar() {
-    const { cart, loading } = useContext(cartContext);
+    const { cart, setCart, loading } = useContext(cartContext);
+
+    function handleCartQuantityChange(productId, newQuantity) {
+        const newCart = cart.map((item) =>
+            item.product_id === productId
+                ? { ...item, quantity: newQuantity }
+                : item,
+        );
+
+        setCart(newCart);
+        async function updateCartQuantity() {
+            try {
+                const response = await fetch(
+                    "http://localhost:8000/v1/api/users/update_cart_quantity",
+                    {
+                        method: "PATCH",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            product_id: productId,
+                            updatedQuantity: newQuantity,
+                        }),
+                    },
+                );
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error);
+                }
+            } catch (err) {
+                console.error(err.message);
+            }
+        }
+
+        updateCartQuantity();
+    }
 
     return (
         <div className="cart-sidebar">
@@ -24,6 +61,12 @@ export default function CartSidebar() {
                                 <select
                                     className="quantity-view"
                                     value={product.quantity}
+                                    onChange={(e) =>
+                                        handleCartQuantityChange(
+                                            product.product_id,
+                                            Number(e.target.value),
+                                        )
+                                    }
                                 >
                                     {[...Array(product.quantity)].map(
                                         (_, i) => (

@@ -10,7 +10,6 @@ export default function CompleteOrder() {
     const [paymentMethod, setPaymentMethod] = useState(null);
     const [address, setAddress] = useState(null);
     const { cart, setCart } = useContext(cartContext);
-    console.log(cart);
     const navigate = useNavigate();
 
     function handlePaymentChange(e) {

@@ -185,6 +185,33 @@ async function getCart(req, res) {
     }
 }
 
+async function updateCartItemQuantity(req, res) {
+    const { product_id, updatedQuantity } = req.body;
+    const userId = req.user_id;
+    try {
+        if (!product_id)
+            return res.status(400).json({ message: "Κάτι πήγε λάθος!" });
+
+        const sqlGetUsersCart = "SELECT _id FROM cart WHERE user_id = ?";
+
+        const usersCart = await getQuery(sqlGetUsersCart, [userId]);
+
+        const sqlUpdateCartItemQuantity =
+            "UPDATE cart_items SET quantity = ? WHERE product_id = ? AND cart_id = ?";
+
+        await runQuery(sqlUpdateCartItemQuantity, [
+            updatedQuantity,
+            product_id,
+            usersCart._id,
+        ]);
+
+        return res.status(200);
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json(err.message);
+    }
+}
+
 async function deleteProductFromCart(req, res) {
     const { id } = req.body;
     const userId = req.user_id;
@@ -296,6 +323,7 @@ export {
     logOut,
     addProductToCart,
     getCart,
+    updateCartItemQuantity,
     deleteProductFromCart,
     getLoggedInUser,
     completeOrder,

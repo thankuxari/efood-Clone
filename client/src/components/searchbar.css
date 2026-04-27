@@ -23,8 +23,30 @@
 
 .search-bar-dropdown-result {
     position: absolute;
-    width: 100%;
-    background-color: aliceblue;
-    height: 150px;
+    width: 90%;
+    background-color: #fff;
+    height: auto;
     overflow: hidden;
+    border-radius: 14px;
+    padding: 1em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.search-result-container {
+    display: flex;
+    align-items: center;
+    padding: 1em 0em;
+    border-bottom: 1px solid #e5e5ea;
+}
+
+.search-result-container img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 1em;
+}
+
+.search-result-container h5 {
+    font-size: 0.85rem;
+    color: black;
 }

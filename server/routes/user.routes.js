@@ -9,6 +9,7 @@ import {
     getLoggedInUser,
     completeOrder,
     searchForShops,
+    updateCartItemQuantity,
 } from "../controllers/user.controller.js";
 import verifyUserToken from "../middleware/verifyUserToken.js";
 
@@ -19,6 +20,11 @@ userRouter.post("/login", loginUser);
 userRouter.post("/logout", logOut);
 userRouter.post("/add_cart", verifyUserToken, addProductToCart);
 userRouter.get("/get_cart", verifyUserToken, getCart);
+userRouter.patch(
+    "/update_cart_quantity",
+    verifyUserToken,
+    updateCartItemQuantity,
+);
 userRouter.delete("/delete_item", verifyUserToken, deleteProductFromCart);
 userRouter.post("/complete_order", verifyUserToken, completeOrder);
 userRouter.post("/search", verifyUserToken, searchForShops);

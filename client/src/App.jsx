@@ -18,6 +18,7 @@ import { modalContext } from "./context/modalContext.jsx";
 import "./App.css";
 import CompleteOrder from "./pages/CompleteOrder.jsx";
 import ThankYouPage from "./pages/ThankYouPage.jsx";
+import Orders from "./pages/Orders.jsx";
 
 function App() {
     const { user } = useContext(userContext);
@@ -53,6 +54,7 @@ function App() {
                     <Route path="/user_settings" element={<UserSettings />} />
                     <Route path="/complete_order" element={<CompleteOrder />} />
                     <Route path="/thank_you" element={<ThankYouPage />} />
+                    <Route path="/orders" element={<Orders />}></Route>
                 </Routes>
             </div>
         </>

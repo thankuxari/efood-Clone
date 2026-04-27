@@ -86,7 +86,9 @@ export default function SearchBar() {
                                 setQuery("");
                             }}
                         >
-                            <img src={result.shop_logo} alt="" />
+                            {result?.shop_logo && (
+                                <img src={result.shop_logo} alt="" />
+                            )}
                             <h5>{result.shop_name}</h5>
                         </Link>
                     ))}

@@ -13,6 +13,8 @@ export default function Modal({ products, setProducts }) {
         product_image: "",
     });
 
+    const [loading, setLoading] = useState(false);
+
     const { setOpenModal } = useContext(modalContext);
 
     const { handleImageChange, imageUrl } = usePreviewImage();
@@ -21,6 +23,8 @@ export default function Modal({ products, setProducts }) {
         e.preventDefault();
 
         try {
+            setLoading(true);
+
             const response = await fetch(
                 "http://localhost:8000/v1/api/shops/add_product",
                 {
@@ -38,11 +42,14 @@ export default function Modal({ products, setProducts }) {
                 shopId,
                 product_description,
                 product_image,
+                _id,
             } = await response.json();
+            setLoading(false);
             setOpenModal(false);
             setProducts([
                 ...products,
                 {
+                    _id,
                     product_name,
                     price,
                     shopId,
@@ -50,6 +57,12 @@ export default function Modal({ products, setProducts }) {
                     product_image,
                 },
             ]);
+            setForm({
+                product_name: "",
+                price: "",
+                product_description: "",
+                product_image: "",
+            });
             enqueueSnackbar("Ένα καινούργιο προϊον προσθέσηκε!", {
                 variant: "success",
             });
@@ -96,7 +109,7 @@ export default function Modal({ products, setProducts }) {
                     />
                     {imageUrl && <img src={imageUrl} />}
                     <button type="submit" className="primary-button">
-                        Προσθήκη
+                        {loading ? "Φορτώνει!" : "Προσθήκη"}
                     </button>
                 </form>
             </div>
