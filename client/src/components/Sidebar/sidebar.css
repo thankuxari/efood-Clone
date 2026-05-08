@@ -30,7 +30,7 @@
 }
 
 .sidebar a:hover {
-    color: #0077ff;
+    color: var(--primary-background-color);
 }
 
 /* Logout */

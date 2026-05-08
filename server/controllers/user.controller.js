@@ -213,20 +213,21 @@ async function updateCartItemQuantity(req, res) {
 }
 
 async function deleteProductFromCart(req, res) {
-    const { id } = req.body;
+    const { productId } = req.body;
     const userId = req.user_id;
     try {
+        if (!productId || !userId)
+            return res.status(400).json({ message: "Κατι πήγε λάθος!" });
+
         // Get the cart by the userid
         const sqlGetUsersCart = "SELECT * FROM cart WHERE user_id = ? ";
         const cart = await getQuery(sqlGetUsersCart, [userId]);
 
+        console.log(cart);
         // Get the product
         const sqlDeleteProductFromCart =
             "DELETE FROM cart_items WHERE cart_id = ? AND product_id = ?";
-        const product = await runQuery(sqlDeleteProductFromCart, [
-            cart._id,
-            id,
-        ]);
+        await runQuery(sqlDeleteProductFromCart, [cart._id, productId]);
 
         return res.status(200).json("The product was deleted succussfully!");
     } catch (err) {
@@ -303,7 +304,7 @@ async function completeOrder(req, res) {
 
 async function searchForShops(req, res) {
     const { query } = req.body;
-    const userId = req.userId;
+    const userId = req.user_id;
     try {
         if (query === "") return;
         const sqlSearchQuery =
@@ -311,6 +312,36 @@ async function searchForShops(req, res) {
         const result = await getQueryAll(sqlSearchQuery, [`%${query}%`]);
 
         return res.status(200).json({ result });
+    } catch (err) {
+        console.error(err.message);
+        return res.status(400).json({ message: err.message });
+    }
+}
+
+async function getUserPastOrders(req, res) {
+    const userId = req.user_id;
+    try {
+        if (!userId)
+            return res.status(400).json({ message: "Κάτι πήγε λάθος!" });
+
+        const getUserSql = "SELECT username FROM users WHERE _id = ?";
+        const { username } = await getQuery(getUserSql, [userId]);
+
+        let orders = [];
+        const sqlGetUserPastOrders = "SELECT * from orders WHERE user_id = ?";
+        orders = await getQueryAll(sqlGetUserPastOrders, [userId]);
+
+        const sqlGetOrderItems = "SELECT * from order_items where order_id = ?";
+
+        for (let i = 0; i < orders.length; i++) {
+            const products = await getQueryAll(sqlGetOrderItems, [
+                orders[i]._id,
+            ]);
+            orders[i].product_items = products;
+            orders[i].username = username;
+        }
+
+        return res.status(200).json(orders);
     } catch (err) {
         console.error(err.message);
         return res.status(400).json({ message: err.message });
@@ -328,4 +359,5 @@ export {
     getLoggedInUser,
     completeOrder,
     searchForShops,
+    getUserPastOrders,
 };

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { userContext } from "../context/userContext";
+import "./usersettings.css";
 export default function UserSettings() {
     const { user } = useContext(userContext);
 
@@ -14,8 +15,8 @@ export default function UserSettings() {
                 <label htmlFor="address">Διεύθυνση</label>
                 <input type="text" id="address" />
                 <label htmlFor="phone">Κινητό</label>
-                <input type="number" max={1} id="phone" />
-                <button>Αποθήκευση Αλλαγών</button>
+                <input type="tel" max={1} id="phone" />
+                <button className="primary-button">Αποθήκευση Αλλαγών</button>
             </form>
         </div>
     );

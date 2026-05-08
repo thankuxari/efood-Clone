@@ -1,0 +1,121 @@
+.orders-container {
+    max-width: 800px;
+    margin: 2em auto;
+    padding: 0 1em;
+}
+
+.orders-container h3 {
+    margin-bottom: 1em;
+}
+
+.order-card {
+    background: #ffffff;
+    border-radius: 0.6em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1em;
+    overflow: hidden;
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    cursor: pointer;
+    background: #fafafa;
+}
+
+.order-header h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.order-header p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.status {
+    padding: 0.3em 0.7em;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: #e6f0ff;
+    color: #007bff;
+}
+
+.order-dropdown {
+    padding: 1em;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    animation: fadeIn 0.2s ease;
+}
+
+.order-dropdown p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.order-items {
+    margin-top: 0.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    background: #f9f9f9;
+    padding: 0.5em 0.7em;
+    border-radius: 0.4em;
+    font-size: 0.85rem;
+}
+
+.order-item span {
+    flex: 1;
+    text-align: center;
+}
+
+.order-item span:first-child {
+    text-align: left;
+}
+
+.order-item span:last-child {
+    text-align: right;
+    font-weight: 500;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 600px) {
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .order-item {
+        font-size: 0.8rem;
+    }
+}

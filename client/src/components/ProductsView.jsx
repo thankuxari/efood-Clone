@@ -38,7 +38,7 @@ export default function ProductsView() {
     if (loading) return <h1>Φορτώνει...</h1>;
     if (products.length === 0)
         return (
-            <>  
+            <>
                 <div className="products-view-header">
                     <h2>Δεν βρέθηκαν προϊόντα</h2>
                     <button

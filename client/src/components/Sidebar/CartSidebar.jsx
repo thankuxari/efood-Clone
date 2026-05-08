@@ -3,6 +3,7 @@ import { cartContext } from "../../context/cartContext.jsx";
 import { Link } from "react-router-dom";
 import calculateCartTotalSum from "../../utils/calculateCartTotalSum.js";
 import calculateCartSingleItemSum from "../../utils/calculateCartSingleItemSum.js";
+import { enqueueSnackbar } from "notistack";
 import "./cartsidebar.css";
 
 export default function CartSidebar() {
@@ -45,6 +46,37 @@ export default function CartSidebar() {
         updateCartQuantity();
     }
 
+    async function handleCartDelete(productId) {
+        const newCart = cart.filter(
+            (product) => product.product_id !== productId,
+        );
+        setCart(newCart);
+
+        async function handleCartDeletion() {
+            try {
+                const response = await fetch(
+                    "http://localhost:8000/v1/api/users/delete_item",
+                    {
+                        method: "DELETE",
+                        credentials: "include",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ productId }),
+                    },
+                );
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message);
+                }
+            } catch (err) {
+                console.error(err.message);
+                enqueueSnackbar(err.message, { variant: "error" });
+            }
+        }
+
+        handleCartDeletion();
+    }
+
     return (
         <div className="cart-sidebar">
             <h3>Καλάθι</h3>
@@ -83,9 +115,17 @@ export default function CartSidebar() {
                                 <h4>{calculateCartSingleItemSum(product)}</h4>
                             </div>
 
-                            {product?.product_image && (
-                                <img src={product.product_image} alt="" />
-                            )}
+                            <div className="shop-product-image-container">
+                                {product.product_image && (
+                                    <img src={product.product_image} alt="" />
+                                )}
+                                <i
+                                    className="fa-solid fa-minus"
+                                    onClick={() =>
+                                        handleCartDelete(product.product_id)
+                                    }
+                                ></i>
+                            </div>
                         </div>
                     ))}
 

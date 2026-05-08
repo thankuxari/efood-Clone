@@ -1,0 +1,49 @@
+.user-settings-container {
+    max-width: 600px;
+    margin: 2.5em auto;
+    padding: 1.5em;
+}
+
+.user-settings-container h3 {
+    margin-bottom: 1em;
+    font-size: 1.4rem;
+}
+
+.user-settings-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #ffffff;
+    padding: 1.5em;
+    border-radius: 0.6em;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.user-settings-container label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.user-settings-container input {
+    padding: 0.7em 0.9em;
+    border-radius: 0.4em;
+    border: 1px solid #ddd;
+    outline: none;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.user-settings-container input:focus {
+    border-color: var(--primary-background-color);
+}
+
+@media (max-width: 600px) {
+    .user-settings-container {
+        padding: 1em;
+    }
+
+    .user-settings-container form {
+        padding: 1em;
+    }
+}
